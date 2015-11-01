@@ -1,6 +1,6 @@
 #
 # robots.txt for GreenCMS
-# @author ZTS
+# @author Timothy Zhang
 #
 
 User-agent: *

@@ -46,4 +46,69 @@ class LinksModel extends RelationModel
         )
     );
 
+    /**
+     * Add Link
+     * @param $data
+     *
+     * @return bool
+     *
+     * @cache_key link_detail_id_$link_id
+     */
+    public function addLink($data)
+    {
+        if ($this->data($data)->add()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     * Update Link
+     * @param $data
+     *
+     * @return bool
+     *
+     * @cache_key link_detail_id_$link_id
+     */
+    public function updateLink($data)
+    {
+        if ($this->data($data)->save()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     * Delete link
+     * @param int $link_id id to be deleted
+     *
+     * @return bool true for success
+     */
+    public function delLink($link_id)
+    {
+        if ($this->where(array('link_id' => $link_id))->delete()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Fetch link detail
+     * @param int $link_id id to be deleted
+     *
+     * @return mixed
+     *
+     * @cache_key link_detail_id_$link_id
+     */
+    public function detailLink($link_id)
+    {
+        $link_list = $this->where(array('link_id' => $link_id))->find();
+        return $link_list;
+    }
+
 }

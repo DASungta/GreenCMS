@@ -53,7 +53,7 @@ class MemberController extends AdminBaseController
 
         $CountEvent = new CountEvent();
 
-        $user = D('User', 'Logic')->detail($uid);
+        $user = $this->UserLogic->detailUser($uid);
 
         $this->assign("PostCount", $CountEvent->getPostCount(array("user_id" => $uid)));
 
@@ -76,7 +76,7 @@ class MemberController extends AdminBaseController
 
         $post_data = I('post.');
 
-        $res = $UserLogic->update($uid, $post_data);
+        $res = $UserLogic->updateUser($uid, $post_data);
 
         $this->array2Response($res);
 

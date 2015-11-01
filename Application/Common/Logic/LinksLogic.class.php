@@ -9,32 +9,16 @@
 
 namespace Common\Logic;
 
-use Think\Model\RelationModel;
+use Common\Model\LinksModel;
 
 /**
- * 链接逻辑定义
  * Class LinksLogic
  * @package Home\Logic
  */
-class LinksLogic extends RelationModel
+class LinksLogic extends LinksModel
 {
 
-    /**
-     * 添加链接
-     * @param $data 数据
-     *
-     * @return bool 是否添加成功
-     */
-    public function addLink($data)
-    {
-        $Links = D("Links"); // 实例化User对象
 
-        if ($Links->data($data)->add()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     /**
      * 获取list
@@ -59,30 +43,7 @@ class LinksLogic extends RelationModel
     }
 
 
-    /**
-     * 删除链接
-     * @param $id 需要删除的id
-     *
-     * @return bool 是否删除成功
-     */
-    public function del($id)
-    {
-        if ($this->where(array('link_id' => $id))->delete()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
-    /**
-     * 获取链接详细详细
-     * @param $id 需要查询id
-     *
-     * @return mixed 详细信息
-     */
-    public function detail($id)
-    {
-        $link_list = $this->where(array('link_id' => $id))->find();
-        return $link_list;
-    }
+
+
 }

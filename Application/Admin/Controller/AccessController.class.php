@@ -96,7 +96,7 @@ class AccessController extends AdminBaseController
         if ($id == 1) { // 判断用户是否为超级管理员，如果是不能做任何操作（我的超级管理员ID为1）
             $this->error('对不起，您不能对此用户做任何操作！');
         } else {
-            $i = M('User')->where(array('id' => $id))->setField('user_status', '0');
+            $i =  $this->UserLogic->where(array('id' => $id))->setField('user_status', '0');
             $this->success('用户已关闭！');
         }
     }
@@ -111,7 +111,7 @@ class AccessController extends AdminBaseController
         if ($id == 1) { // 判断用户是否为超级管理员，如果是不能做任何操作（我的超级管理员ID为1）
             $this->error('对不起，您不能对此用户做任何操作！');
         } else {
-            $i = M('User')->where(array('id' => $id))->setField('lock', '1');
+            $i =  $this->UserLogic->where(array('id' => $id))->setField('lock', '1');
             $this->success('用户已开启！');
         }
     }
@@ -171,7 +171,7 @@ class AccessController extends AdminBaseController
     {
         $role = D('role')->select();
         $this->assign('info', $this->getRoleListOption());
-        $this->assign("action_name",'addUser' );
+        $this->assign("action_name", 'addUser');
         $this->display("adduser");
     }
 
@@ -213,7 +213,7 @@ class AccessController extends AdminBaseController
         $UserLogic = new UserLogic();
 
         $user_login = htmlspecialchars(trim($_POST ['user_login']));
-        $userDetail = $UserLogic->detailByUserlogin($user_login);
+        $userDetail = $UserLogic->detailUserWithInfo(array('user_login' => $user_login));
         if ($userDetail != '') {
             $this->error('用户名已存在！');
         } else {
@@ -257,7 +257,7 @@ class AccessController extends AdminBaseController
             }
         } else {
 
-            $info = D('User')->where(array(
+            $info = $this->UserLogic->where(array(
                 'user_id' => $aid
             ))->relation(true)->find();
 
@@ -284,11 +284,11 @@ class AccessController extends AdminBaseController
      */
     public function delUser($aid = -1)
     {
-        $user = M('User')->where(array("user_id" => $aid))->find();
+        $user = $this->UserLogic->where(array("user_id" => $aid))->find();
         if ($user ['user_login'] == 'admin') {
             $this->error("管理员信息不允许操作");
         } else {
-            if (D('User')->where(array('user_id' => $aid))->delete()) {
+            if ($this->UserLogic->where(array('user_id' => $aid))->delete()) {
                 if (D('Role_users')->where(array('user_id' => $aid))->delete()) {
 
                     if (M('Posts')->where(array("user_id" => $aid))->find()) {
@@ -435,6 +435,7 @@ class AccessController extends AdminBaseController
         }
 
     }
+
     /**
      * 投稿员指定分类
      */
@@ -444,7 +445,7 @@ class AccessController extends AdminBaseController
 
             $data["cataccess"] = json_encode(I('post.cats'));
 
-            $res = D('User')->where(array('user_id' => $id))->data($data)->save();
+            $res = $this->UserLogic->where(array('user_id' => $id))->data($data)->save();
             if ($res) {
                 $this->success("保存成功");
             } else {
@@ -452,7 +453,7 @@ class AccessController extends AdminBaseController
             }
 
         } else {
-            $role = D('User')->where(array('user_id' => $id))->find();
+            $role = $this->UserLogic->where(array('user_id' => $id))->find();
 
             $this->user_cats = json_decode($role['cataccess']);
 
@@ -663,7 +664,7 @@ class AccessController extends AdminBaseController
     public function profileAll($uid)
     {
 
-        $user = D('User', 'Logic')->cache(true)->detail($uid);
+        $user = $this->UserLogic->detailUser($uid);
         unset($user['user_pass']);
         unset($user['user_session']);
         unset($user['user_activation_key']);
@@ -684,7 +685,7 @@ class AccessController extends AdminBaseController
 
         $LogLogic = new LogLogic();
 
-        $count = $LogLogic->countAll($where); // 查询满足要求的总记录数
+        $count = $LogLogic->countLog($where); // 查询满足要求的总记录数
 
 
         if ($count != 0) {
@@ -692,7 +693,7 @@ class AccessController extends AdminBaseController
             $Page = new GreenPage($count, $page); // 实例化分页类 传入总记录数
             $pager_bar = $Page->show();
             $limit = $Page->firstRow . ',' . $Page->listRows;
-            $log_list = $LogLogic->getList($limit, $where);
+            $log_list = $LogLogic->getLogList($limit, $where);
 
         }
 

@@ -59,7 +59,7 @@ class Category
      * @param string $model
      * @param array $fields ,object  $model 数组或对象，基于TP3.2的数据表模型名称
      *
-     * @internal param array $field 字段映射，分类cat_id，上级分类cat_father,分类名称,格式化后分类名称cat_name* 字段映射，分类cat_id，上级分类cat_father,分类名称,格式化后分类名称cat_name
+     * $field 字段映射，分类cat_id，上级分类cat_father,分类名称,格式化后分类名称cat_name* 字段映射，分类cat_id，上级分类cat_father,分类名称,格式化后分类名称cat_name
      */
     public function __construct($model = '', $fields = array())
     {

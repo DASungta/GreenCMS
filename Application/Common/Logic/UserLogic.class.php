@@ -9,14 +9,14 @@
 
 namespace Common\Logic;
 
-use Think\Model\RelationModel;
+use Common\Model\UserModel;
 
 /**
  * 用户逻辑定义
  * Class UserLogic
  * @package Home\Logic
  */
-class UserLogic extends RelationModel
+class UserLogic extends UserModel
 {
     /**
      * 获取指定用户信息
@@ -25,15 +25,15 @@ class UserLogic extends RelationModel
      *
      * @return mixed 找到返回数组
      */
-    public function detail($uid, $relation = true)
+    public function detailUser($uid, $relation = true)
     {
-        $user = D('User')->where(array('user_id' => $uid))->relation($relation)->find();
+        $user = $this->where(array('user_id' => $uid))->cache(true, 10)->relation($relation)->find();
         return $user;
     }
 
-    public function detailByUserlogin($user_login, $relation = true)
+    public function detailUserWithInfo($info, $relation = true)
     {
-        $user = D('User')->where(array('user_login' => $user_login))->relation($relation)->find();
+        $user = $this->where($info)->relation($relation)->find();
         return $user;
     }
 
@@ -46,7 +46,7 @@ class UserLogic extends RelationModel
      */
     public function getList($limit = true, $relation = true)
     {
-        return D('User')->limit($limit)->relation($relation)->select();
+        return $this->limit($limit)->relation($relation)->select();
     }
 
     /**
@@ -55,7 +55,7 @@ class UserLogic extends RelationModel
      * @param array $data
      * @return array
      */
-    public function update($uid = 0, $data = array())
+    public function updateUser($uid = 0, $data = array())
     {
         $db_res = D('User')->where(array("user_id" => $uid))->data($data)->save();
         if ($db_res) {
@@ -99,7 +99,7 @@ class UserLogic extends RelationModel
     public function changePassword($uid, $oldPassword, $newPassword)
     {
 
-        $user = $this->detail($uid);
+        $user = $this->detailUser($uid);
         if ($user['user_pass'] != encrypt($oldPassword)) {
             return arrayRes(0, "原用户密码不正确");
         }
@@ -114,7 +114,6 @@ class UserLogic extends RelationModel
         }
 
     }
-
 
 
     /**
@@ -143,10 +142,9 @@ class UserLogic extends RelationModel
     }
 
 
-    //TODO 使用原生SQL提高效率
     public function getCatAccess($uid)
     {
-        $user = $this->detail($uid);
+        $user = $this->detailUser($uid);
         $role_id = $user["user_role"] ["role_id"];
         $role = D('Role')->where(array('id' => $role_id))->find();
         $where['cat_id'] = array('in', json_decode($role ["cataccess"]));

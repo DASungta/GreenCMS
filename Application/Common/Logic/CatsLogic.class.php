@@ -9,44 +9,37 @@
 
 namespace Common\Logic;
 
+use Common\Model\CatsModel;
 use Common\Util\Category;
-use Think\Model\RelationModel;
 
 /**
  * 分类逻辑定义
  * Class CatsLogic
  * @package Home\Logic
  */
-class CatsLogic extends RelationModel
+class CatsLogic extends CatsModel
 {
 
-    /**
-     * @param array $info_with
-     * @param array $ids 需要限制的id
-     *
-     * @internal param string $type
-     * @return int
-     */
-    public function countAll($info_with = array(), $ids = array())
-    {
-        $info = $info_with;
-
-        if (!empty($ids)) $info['cat_id'] = array('in', $ids);
-
-        $count = $this->where($info)->count();
-        return $count;
-    }
 
     /**
-     * 获取分类列表
+     * Fetch Category List
      * @param int $limit limit
-     * @param bool $relation 是否关联
+     * @param bool $relation if fetch post_id
      *
      * @return mixed
      */
     public function getList($limit = 20, $relation = true)
     {
-        return D('Cats')->limit($limit)->relation($relation)->select();
+        //relation -> cat_post
+        $list = $this->rawList($limit);
+
+        if ($relation) {
+            foreach ($list as $item_key => $item_value) {
+                $list[$item_key]["cat_post"] = $this->getPostCatRelation($item_value['cat_id']);
+            }
+        }
+
+        return $list;
     }
 
     /**
@@ -161,7 +154,7 @@ class CatsLogic extends RelationModel
 //
 //        echo $cat_id_list;
 
-        $cat = $this->getPostsIdWithChildren($cat_id, 'publish' );
+        $cat = $this->getPostsIdWithChildren($cat_id, 'publish');
 
         if ($cat != null) {
             $posts = D('Posts', 'Logic')->getList($num, 'single', 'post_date desc', $relation, array(), $cat, $except_field);
@@ -203,6 +196,7 @@ class CatsLogic extends RelationModel
         }
         return $ids;
     }
+
     /**
      * 获取指定分类的post id
      * 使用原生SQL
@@ -217,9 +211,9 @@ class CatsLogic extends RelationModel
 
         $getChild = $this->getChild($info);
 
-        $cat_id_list = "'".$info."'";
+        $cat_id_list = "'" . $info . "'";
         foreach ($getChild as $child) {
-            $cat_id_list.=",'";
+            $cat_id_list .= ",'";
             $cat_id_list .= $child['cat_id'];
             $cat_id_list .= "'";
         }
@@ -229,7 +223,7 @@ class CatsLogic extends RelationModel
         $res = D('Post_cat')
             ->table(GreenCMS_DB_PREFIX . 'post_cat as pc,' . GreenCMS_DB_PREFIX . 'posts as ps')
             ->field('ps.post_id')
-            ->where("cat_id IN (".$cat_id_list.") and pc.post_id=ps.post_id and ps.post_status ='%s'", $post_status)
+            ->where("cat_id IN (" . $cat_id_list . ") and pc.post_id=ps.post_id and ps.post_status ='%s'", $post_status)
             ->limit($limit)
             ->order('ps.post_top desc,ps.post_date desc')
             ->select();
@@ -242,22 +236,10 @@ class CatsLogic extends RelationModel
         return $ids;
     }
 
-    /**
-     * @param $cat_id int 分类id
-     *
-     * @return mixed
-     */
-//    public function getPostIdsByCat($cat_id)
-//    {
-//        $cat = $this->getPostsByCat($cat_id);
-//        foreach ($cat as $key => $value) {
-//            $cat[$key] = $cat[$key]['post_id'];
-//        }
-//        return $cat;
-//    }
+
 
     /**
-     * 获取结构化分类
+     * Fetch Category Tree
      * @return array
      */
     public function category()
@@ -270,14 +252,14 @@ class CatsLogic extends RelationModel
             'cat_slug'
         )); // , array('cid', 'pid', 'name', 'fullname')
 
-        return $Cat->getList(null,0,'cat_order');
+        return $Cat->getList(null, 0, 'cat_order');
 
     }
 
 
     /**
-     * 获取结构化分类With 文章数量统计
-     * 此操作消耗资源，仅限后台使用
+     * Fetch Category Tree with PostCount
+     * Slow method
      * @return array
      */
     public function selectWithPostsCount()
@@ -290,7 +272,7 @@ class CatsLogic extends RelationModel
             'cat_slug'
         )); // , array('cid', 'pid', 'name', 'fullname')
 
-        return $Cat->getListWithCount(null,0,'cat_order');
+        return $Cat->getListWithCount(null, 0, 'cat_order');
 
     }
 

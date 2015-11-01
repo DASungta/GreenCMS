@@ -8,6 +8,7 @@
  */
 namespace Common\Controller;
 
+use Common\Logic\UserLogic;
 use Think\Controller;
 use Think\Hook;
 
@@ -19,9 +20,13 @@ use Think\Hook;
 abstract class BaseController extends Controller
 {
 
+    protected $UserLogic;
+
     function __construct()
     {
         parent::__construct();
+
+        $this->UserLogic = new UserLogic();
 
     }
 
@@ -98,7 +103,7 @@ abstract class BaseController extends Controller
     protected function _currentUser()
     {
         $user_id = ( int )$_SESSION [get_opinion('USER_AUTH_KEY')];
-        $user = D('User', 'Logic')->cache(true, 10)->detail($user_id);
+        $user = $this->UserLogic->detailUser($user_id);
         $this->assign('user', $user);
     }
 

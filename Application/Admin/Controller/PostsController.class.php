@@ -143,7 +143,7 @@ class PostsController extends AdminBaseController
             $where['user_id'] = $uid;
 
             $UserLogic = new UserLogic();
-            $user_info = $UserLogic->detail($uid);
+            $user_info = $UserLogic->detailUser($uid);
 
             $key .= $user_info["user_nicename"] . ' 的';
 
@@ -421,7 +421,7 @@ class PostsController extends AdminBaseController
 
             //投稿员只能看到权限内部的分类
             if (!$this->noVerify()) {
-                $user = D('User', 'Logic')->detail(( int )$_SESSION [get_opinion('USER_AUTH_KEY')]);
+                $user = $this->UserLogic->detailUser(( int )$_SESSION [get_opinion('USER_AUTH_KEY')]);
                 $role = D('Role')->where(array('id' => $user["user_role"] ["role_id"]))->find();
 
                 $role_cataccess = json_decode($role ["cataccess"]);

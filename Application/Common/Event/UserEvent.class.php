@@ -113,7 +113,7 @@ class UserEvent extends BaseController
     {
 
         $User = new UserLogic();
-        $authInfo = $User->detail(session(C('ADMIN_AUTH_KEY')));
+        $authInfo = $User->detailUser(session(C('ADMIN_AUTH_KEY')));
 
         $User->genHash($authInfo);
         cookie('user_session', null);

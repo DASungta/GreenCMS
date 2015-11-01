@@ -44,7 +44,7 @@ class LoginController extends BaseController
             $loginResArray = json_decode($loginRes, true);
             if ($loginResArray['status'] == 1) {
                 //登陆成功
-                $authInfo = D('User', 'Logic')->where($map)->find();
+                $authInfo = $this->UserLogic->where($map)->find();
                 $log['log_user_id'] = $authInfo['user_id'];
                 $log['log_user_name'] = $authInfo['user_login'];
                 $log['log_password'] = $authInfo['user_pass'];

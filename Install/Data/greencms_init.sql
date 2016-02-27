@@ -71,8 +71,8 @@ INSERT INTO `{$db_prefix}menu` VALUES (null, '0', '98', '所有文章', '_self',
 -- Records of {$db_prefix}options
 -- ----------------------------
 INSERT INTO `{$db_prefix}options` VALUES ('1', 'site_url', 'http://127.0.0.1/green2014', 'yes');
-INSERT INTO `{$db_prefix}options` VALUES ('2', 'title', 'GreenCMS 2014', 'yes');
-INSERT INTO `{$db_prefix}options` VALUES ('3', 'keywords', 'GreenCMS v2 based on ThinkPHP 3.2.1', 'yes');
+INSERT INTO `{$db_prefix}options` VALUES ('2', 'title', 'GreenCMS 2016', 'yes');
+INSERT INTO `{$db_prefix}options` VALUES ('3', 'keywords', 'GreenCMS v3 based on ThinkPHP 3.2.1', 'yes');
 INSERT INTO `{$db_prefix}options` VALUES ('4', 'description', 'GreenCMS created by GreenStudio ', 'yes');
 INSERT INTO `{$db_prefix}options` VALUES ('5', 'foot', '', 'yes');
 INSERT INTO `{$db_prefix}options` VALUES ('6', 'db_build', '20140306', 'yes');
@@ -80,7 +80,7 @@ INSERT INTO `{$db_prefix}options` VALUES ('7', 'software_author', 'GreenStudio',
 INSERT INTO `{$db_prefix}options` VALUES ('8', 'widget_about_us', '关于我们', 'yes');
 INSERT INTO `{$db_prefix}options` VALUES ('9', 'software_homepage', 'http://www.greencms.net', 'yes');
 INSERT INTO `{$db_prefix}options` VALUES ('10', 'software_version', 'v2.1.0306', 'yes');
-INSERT INTO `{$db_prefix}options` VALUES ('11', 'software_name', 'GreenCMS v2', 'yes');
+INSERT INTO `{$db_prefix}options` VALUES ('11', 'software_name', 'GreenCMS v3', 'yes');
 INSERT INTO `{$db_prefix}options` VALUES ('12', 'LOG_RECORD', '1', 'yes');
 INSERT INTO `{$db_prefix}options` VALUES ('13', 'software_build', '20140306', 'yes');
 INSERT INTO `{$db_prefix}options` VALUES ('14', 'HTML_CACHE_ON', '0', 'false');

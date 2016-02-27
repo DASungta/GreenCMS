@@ -1,7 +1,7 @@
 <?php
 
 //数据库类型
-define("GreenCMS_DB_TYPE", 'mysql');
+define("GreenCMS_DB_TYPE", 'mysqli');
 
 //数据库地址
 define("GreenCMS_DB_HOST", '~dbhost~');

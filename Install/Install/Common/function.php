@@ -8,7 +8,7 @@
  */
 function test_db_connect($dbhost, $dbuser, $dbpwd)
 {
-    if (mysql_connect($dbhost, $dbuser, $dbpwd))
+    if (mysqli_connect($dbhost, $dbuser, $dbpwd))
         return true;
     else
         return false;
@@ -61,7 +61,7 @@ function test_write($d)
  * @param $file
  * @param $conn
  */
-function insertDB($file, $conn)
+function insertDB($conn, $file)
 {
     if ($file == '')
         die('文件不存在');
@@ -75,7 +75,7 @@ function insertDB($file, $conn)
         if ($tem[$end] == ";") {
             $sql .= $tem;
             // $sql = str_replace("`", "", $sql);
-            mysql_query($sql, $conn);
+            mysqli_query($conn, $sql);
             $sql = "";
         } else {
             $sql .= $tem;
@@ -97,7 +97,6 @@ function encrypt($data)
     //return md5($data);
     return md5(C("AUTH_CODE") . md5($data));
 }
-
 
 
 function get_opinion($key, $realtime = false, $default = '')

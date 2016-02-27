@@ -148,15 +148,15 @@ class IndexController extends Controller
         if (!test_db_connect($db_host . ":" . $db_port, $db_user, $db_password))
             $this->error("数据库服务器或登录密码无效，\n\n无法连接数据库，请重新设定！");
 
-        $conn = mysql_connect($db_host . ":" . $db_port, $db_user, $db_password);
+        $conn = mysqli_connect($db_host . ":" . $db_port, $db_user, $db_password);
 
 
-        mysql_query("CREATE DATABASE IF NOT EXISTS `" . $db_name . "`;", $conn);
+        mysqli_query($conn, "CREATE DATABASE IF NOT EXISTS `" . $db_name . "`;");
 
-        if (!mysql_select_db($db_name)) $this->error("选择数据库失败，可能是你没权限，请预先创建一个数据库！");
+        if (!mysqli_select_db($conn, $db_name)) $this->error("选择数据库失败，可能是你没权限，请预先创建一个数据库！");
 
-        mysql_query("set character set 'utf8'");
-        mysql_query("set names 'utf8'");
+        mysqli_query($conn,"set character set 'utf8'");
+        mysqli_query($conn,"set names 'utf8'");
 
 
         $file = WEB_ROOT . 'Install/Data/db_config_sample.php';
@@ -197,7 +197,7 @@ class IndexController extends Controller
         $file = WEB_ROOT . 'Data/Cache/greencms_sample.sql';
 
         InstallFile::writeFile($file, $sql_query, 'w+');
-        insertDB($file, $conn);
+        insertDB( $conn ,$file);
         InstallFile::delFile($file);
 
         $sql_empty = InstallFile::readFile(WEB_ROOT . 'Install/Data/greencms_init.sql');
@@ -205,7 +205,7 @@ class IndexController extends Controller
         $file2 = WEB_ROOT . 'Data/Cache/greencms_init_sample.sql';
 
         InstallFile::writeFile($file2, $sql_query, 'w+');
-        insertDB($file2, $conn);
+        insertDB( $conn,$file2);
         InstallFile::delFile($file2);
 
         /**
@@ -215,22 +215,22 @@ class IndexController extends Controller
         `user_url`, `user_registered`, `user_activation_key`, `user_status`,  `user_intro`,
         `user_level`, `user_session`) VALUES(1, '{$admin_user}', '" . $admin_password . "', '管理员', '{$admin_email}',
          '', '{$time}', '', 1, '我是admin，欢迎使用', 2, '{$user_session}');";
-        if (!mysql_query($admin_query, $conn)) $this->error(' 插入管理员数据出错');
+        if (!mysqli_query($conn,$admin_query)) $this->error(' 插入管理员数据出错');
         $cquery = "Update `{$db_prefix}options` set option_value='{$title}' where option_name='title';";
-        if (!mysql_query($cquery, $conn)) $this->error(' 更新配置数据出错');
+        if (!mysqli_query($conn,$cquery)) $this->error(' 更新配置数据出错');
         $cquery = "Update `{$db_prefix}options` set option_value='{$site_url}' where option_name='site_url';";
-        if (!mysql_query($cquery, $conn)) $this->error(' 更新配置数据出错');
+        if (!mysqli_query($conn,$cquery)) $this->error(' 更新配置数据出错');
 
 
         $software_version = GreenCMS_Version;
         $software_build = GreenCMS_Build;
 
         $cquery = "Update `{$db_prefix}options` set option_value='{$software_version}' where option_name='software_version';";
-        if (!mysql_query($cquery, $conn)) $this->error(' 更新配置数据出错');
+        if (!mysqli_query($conn,$cquery)) $this->error(' 更新配置数据出错');
         $cquery = "Update `{$db_prefix}options` set option_value='{$software_build}' where option_name='software_build';";
-        if (!mysql_query($cquery, $conn)) $this->error(' 更新配置数据出错');
+        if (!mysqli_query($conn,$cquery)) $this->error(' 更新配置数据出错');
         $cquery = "Update `{$db_prefix}options` set option_value='{$software_build}' where option_name='db_build';";
-        if (!mysql_query($cquery, $conn)) $this->error(' 更新配置数据出错');
+        if (!mysqli_query($conn,$cquery)) $this->error(' 更新配置数据出错');
 
 
         //TODO              写不下去了

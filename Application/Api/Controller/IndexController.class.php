@@ -34,12 +34,12 @@ class IndexController extends ApiBaseController
      */
     function __construct()
     {
+        parent::__construct();
+
         if (get_opinion('api_open', true, 1) == 0) {
             $this->jsonReturn(0, "API功能关闭");
         }
 
-
-        parent::__construct();
     }
 
 
@@ -53,7 +53,7 @@ class IndexController extends ApiBaseController
 
         $Page = new GreenPage($count, get_opinion('PAGER')); // 实例化分页类 传入总记录数
         $limit = $Page->firstRow . ',' . $Page->listRows; //获取分页信息
-        $posts_list = $PostsLogic->getList($limit, 'single', 'post_date desc', true);
+        $posts_list = $PostsLogic->getList($limit, 'single');
 
         $res_array["posts"] = array();
         foreach ($posts_list as $post) {
@@ -82,14 +82,19 @@ class IndexController extends ApiBaseController
         $Posts = new PostsLogic();
         $post_res = $Posts->detail($id, true);
 
-        $res_array = array();
+
         if (!$post_res) {
             $this->jsonReturn(0, '没有找到文章');
         } else {
             $post_res['post_content'] = strip_tags($post_res['post_content']);
             $post_res['post_url'] = U('Api/Index/post', array('id' => $post_res['post_id']), false, true);
             $post_res["post_img"] = get_post_img($post_res);
-
+            unset($post_res["post_user"]["user_session"]);
+            unset($post_res["post_user"]["user_activation_key"]);
+            unset($post_res["post_user"]["user_login"]);
+            unset($post_res["post_user"]["user_pass"]);
+            unset($post_res["post_user"]["user_registered"]);
+            unset($post_res["post_user"]["cataccess"]);
             $this->jsonReturn(1, $post_res);
         }
 

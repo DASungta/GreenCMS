@@ -435,11 +435,11 @@ class SystemController extends AdminBaseController
     public function bugsHandle()
     {
 
-
         $post_info = I('post.');
         $server_info = get_server_info();
+        unset($server_info["SERVER_SIGNATURE"]) ;
         $post_info['server_info'] = $server_info;
-        dump($post_info);
+//        dump($post_info);
 
         echo json_encode($post_info);
 

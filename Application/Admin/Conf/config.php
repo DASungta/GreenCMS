@@ -121,7 +121,7 @@ $menu_arr = array(
         ),
 
         'Tools' => array(
-            'Tools/index' => '可用工具',
+//            'Tools/index' => '可用工具',
             'Tools/log' => '日志工具',
             'Tools/wordpress' => '从WordPress导入',
             'Tools/count' => '统计工具',

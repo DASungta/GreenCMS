@@ -69,6 +69,7 @@ class ToolsController extends AdminBaseController
 
 
                 File::delFile($file_path_full);
+                die();
                 $this->success('导入完成');
             }
             $this->error('导入失败');

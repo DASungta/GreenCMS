@@ -36,6 +36,11 @@ class WordpressEvent
     }
 
 
+    public function getStringFromCDATA($item)
+    {
+        return simplexml_load_string($item->asXML(), 'SimpleXMLElement', LIBXML_NOCDATA)->__toString();
+    }
+
     /**
      * @param $filename
      */
@@ -59,48 +64,58 @@ class WordpressEvent
 
         $items = $wordpress_channel->xpath('item');
 
-
         foreach ($items as $key => $value) {
             $post_cat_temp = array();
             $post_tag_temp = array();
 
 
+//            dump($value);
+
             $value_wp = $value->children('wp', true);
-
-            $value_wp = object_to_array($value_wp);
-
-            if ($value_wp["post_type"] == 'post') {
-                $post_content = $value->children('content', true);
-                $post_content = (simplexml_load_string($post_content->asXML(), 'SimpleXMLElement', LIBXML_NOCDATA));
+            $value_wp->post_type = (string)$value_wp->post_type;
+            $value_wp->post_date = (string)$value_wp->post_date;
+            $value_wp->post_name = (string)$value_wp->post_name;
+            $value_wp->status = (string)$value_wp->status;
 
 
-                $value = object_to_array($value);
+            if ($value_wp->post_type == 'post') {
+               $post_content = $value->children('content', true)->encoded;
+ //
+ //                 dump($value_wp);
+                $value_wp = object_to_array($value_wp);
                 //   dump($value);
-                //   dump($value_wp);
 
 
                 $post_temp = array();
                 $post_temp['user_id'] = 1;
-                $post_temp['post_content'] = $post_content->__toString();
+                $post_temp['post_content'] = (string)$post_content;
                 $post_temp['post_id'] = (int)$value_wp['post_id'];
-                $post_temp['post_title'] = $value['title'];
-                $post_temp['post_status'] = 'publish';
+                $post_temp['post_title'] = (string)$value->title;
+                $post_temp['post_status'] = "publish";
                 $post_temp['post_date'] = $value_wp['post_date'];
                 $post_temp['post_modified'] = $value_wp['post_date'];
                 $post_temp['post_type'] = 'single';
                 $post_temp['post_name'] = $value_wp['post_name'];
 
+//                dump($post_temp);
 
-                $tag_cat = $value['category'];
+                $tag_cat = $value->category;
+
                 foreach ($tag_cat as $key => $value) {
+                    $value = object_to_array($value);
+
                     if ($value["@attributes"]["domain"] == 'category') {
                         $nicename = D('Cats', 'Logic')->detail($value["@attributes"]["nicename"]);
                         $cat_id = (int)$nicename['cat_id'];
-                        array_push($post_cat_temp, $cat_id);
+                        if ($cat_id != 0) {
+                            array_push($post_cat_temp, $cat_id);
+                        }
                     } elseif ($value["@attributes"]["domain"] == 'post_tag') {
                         $nicename = D('Tags', 'Logic')->detail($value["@attributes"]["nicename"]);
                         $tag_id = (int)$nicename['tag_id'];
-                        array_push($post_tag_temp, $tag_id);
+                        if ($tag_id != 0) {
+                            array_push($post_tag_temp, $tag_id);
+                        }
                     } else {
                         Log::record('No match ');
                     }
@@ -145,26 +160,34 @@ class WordpressEvent
         $file_content = File::readFile($filename);
 
         $wordpress_xml = new \SimpleXMLElement($file_content);
-        $wordpress_channel = $wordpress_xml->channel->children('wp', true);
 
-        foreach ($wordpress_channel as $key => $value) {
+        $namespaces = $wordpress_xml->getNamespaces(true);
+        $wordpress_channel = $wordpress_xml->channel;
+        foreach ($namespaces as $key => $value) {
+            $wordpress_channel->registerXPathNamespace($key, $value);
+        }
 
-            if ($value->tag_slug != '') {
-                $value->tag_name = (simplexml_load_string($value->tag_name->asXML(), 'SimpleXMLElement', LIBXML_NOCDATA));
+        $tags = $wordpress_channel->xpath('wp:tag');
 
-                $item = object_to_array($value);
+        foreach ($tags as $key => $value) {
+
+            $value_wp = $value->children('wp', true);
+            $value_wp->tag_slug = $this->getStringFromCDATA($value_wp->tag_slug);
+            $value_wp->tag_name = $this->getStringFromCDATA($value_wp->tag_name);
+
+            if ($value_wp->tag_slug != '') {
+
+                $item = object_to_array($value_wp);
                 $tag_temp = array();
                 $tag_temp['tag_id'] = $item['term_id'];
                 $tag_temp['tag_slug'] = $item['tag_slug'];
                 $tag_temp['tag_name'] = $item['tag_name'];
-                // dump($tag_temp);
+
                 D('Tags', 'Logic')->data($tag_temp)->add();
 
             }
 
-
         }
-
 
     }
 
@@ -179,14 +202,30 @@ class WordpressEvent
         $file_content = File::readFile($filename);
 
         $wordpress_xml = new \SimpleXMLElement($file_content);
-        $wordpress_channel = $wordpress_xml->channel->children('wp', true);
 
+        $namespaces = $wordpress_xml->getNamespaces(true);
+        $wordpress_channel = $wordpress_xml->channel;
+        foreach ($namespaces as $key => $value) {
+            $wordpress_channel->registerXPathNamespace($key, $value);
+        }
 
-        foreach ($wordpress_channel as $key => $value) {
+        $cats = $wordpress_channel->xpath('wp:category');
 
-            if ($value->category_nicename != '') {
-                $value->cat_name = (simplexml_load_string($value->cat_name->asXML(), 'SimpleXMLElement', LIBXML_NOCDATA));
-                $item = object_to_array($value);
+        //    dump($cats);
+        foreach ($cats as $key => $value) {
+
+            $value_wp = $value->children('wp', true);
+//            $value_wp = object_to_array($value_wp);
+
+            $value_wp->category_nicename = $this->getStringFromCDATA($value_wp->category_nicename);
+            $value_wp->category_parent = $this->getStringFromCDATA($value_wp->category_parent);
+            $value_wp->cat_name = $this->getStringFromCDATA($value_wp->cat_name);
+
+//           dump($value_wp);
+
+            if ($value_wp->category_nicename != '') {
+
+                $item = object_to_array($value_wp);
 
                 $cat_temp = array();
                 $cat_temp['cat_id'] = $item['term_id'];
@@ -197,8 +236,9 @@ class WordpressEvent
 
                 D('Cats', 'Logic')->data($cat_temp)->add();
 
+            } else {
+//                dump($value_wp);
             }
-
 
         }
     }

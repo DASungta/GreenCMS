@@ -20,7 +20,16 @@ use Think\Model\RelationModel;
 class AccessLogic extends RelationModel
 {
 
-    /**
+    protected $UserLogic;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->UserLogic = new UserLogic();
+
+    }
+        /**
      * +----------------------------------------------------------
      * 管理员列表
      * +----------------------------------------------------------
@@ -28,9 +37,8 @@ class AccessLogic extends RelationModel
     public function adminList($limit = 0)
     {
         $where = array("user_level" => array('neq', 5));
-        $UserLogic = new UserLogic();
 
-        $res = $UserLogic->selectWithPostsCount($limit, true, $where);
+        $res = $this->UserLogic->selectWithPostsCount($limit, true, $where);
         foreach ($res as $k => $v) {
             $res [$k] ['user_status'] = $v ['user_status'] == 1 ? "启用" : "禁用";
         }
@@ -47,9 +55,7 @@ class AccessLogic extends RelationModel
     {
         $where = array("user_level" => '5');
 
-        $UserLogic = new UserLogic();
-
-        $res = $UserLogic->selectWithPostsCount($limit, true, $where);
+        $res = $this->UserLogic->selectWithPostsCount($limit, true, $where);
         foreach ($res as $k => $v) {
             $res [$k] ['user_status'] = $v ['user_status'] == 1 ? "启用" : "禁用";
         }
@@ -173,16 +179,6 @@ class AccessLogic extends RelationModel
 
     /**
      * +----------------------------------------------------------
-     * 添加管理员
-     * +----------------------------------------------------------
-     */
-    public function addAdmin()
-    {
-
-    }
-
-    /**
-     * +----------------------------------------------------------
      * 编辑管理员
      * +----------------------------------------------------------
      */
@@ -242,12 +238,6 @@ class AccessLogic extends RelationModel
         }
     }
 
-    /**
-     * @param $id
-     */
-    public function delAdmin($id = -1)
-    {
-    }
 
     /**
      * +----------------------------------------------------------

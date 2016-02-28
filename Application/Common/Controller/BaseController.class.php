@@ -30,15 +30,7 @@ abstract class BaseController extends Controller
 
     }
 
-    /**
-     * 判断是否为Sae平台
-     */
-    function isSae()
-    {
-        if (defined('SAE_TMP_PATH')) {
-            $this->error("当前功能不支持SAE下使用");
-        }
-    }
+
 
     /**
      * 获取主题个性设置

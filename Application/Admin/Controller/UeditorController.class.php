@@ -124,7 +124,7 @@ class UeditorController extends AdminBaseController
 
         $config = array(
             "savePath" => 'File/',
-            "maxSize" => get_opinion('attachFileSize', false, 20*1000*1000), // 单位B，20M
+            "maxSize" => get_opinion('attachFileSize', false, 20 * 1000 * 1000), // 单位B，20M
             "exts" => explode(",", get_opinion("attachFileSuffix", false, 'zip,rar,doc,docx,zip,pdf,txt,ppt,pptx,xls,xlsx')),
             "subName" => $this->sub_name,
         );
@@ -215,15 +215,13 @@ class UeditorController extends AdminBaseController
                 continue;
             }
 
-            //sae环境 不兼容
-            if (!defined('SAE_TMP_PATH')) {
-                //获取请求头
-                $heads = get_headers($imgUrl);
-                //死链检测
-                if (!(stristr($heads[0], "200") && stristr($heads[0], "OK"))) {
-                    array_push($tmpNames, "get_headers error");
-                    continue;
-                }
+
+            //获取请求头
+            $heads = get_headers($imgUrl);
+            //死链检测
+            if (!(stristr($heads[0], "200") && stristr($heads[0], "OK"))) {
+                array_push($tmpNames, "get_headers error");
+                continue;
             }
 
 
@@ -259,37 +257,20 @@ class UeditorController extends AdminBaseController
             $savePath = $config['savePath'];
 
 
-            if (!defined('SAE_TMP_PATH')) {
-
-                //非SAE
-                //创建保存位置
-                if (!file_exists($savePath)) {
-                    mkdir($savePath, 0777, true);
-                }
-                //写入文件
-                $tmpName = $savePath . rand(1, 10000) . time() . strrchr($imgUrl, '.');
-                try {
-                    File::writeFile($tmpName, $img, "a");
-
-                    array_push($tmpNames, __ROOT__ . '/' . $tmpName);
-                } catch (\Exception $e) {
-                    array_push($tmpNames, "error");
-                }
-            } else {
-                //SAE
-
-                $Storage = new \SaeStorage();
-                $domain = get_opinion('SaeStorage');
-                $destFileName = 'remote/' . date('Y') . '/' . date('m') . '/' . rand(1, 10000) . time() . strrchr($imgUrl, '.');
-                $result = $Storage->write($domain, $destFileName, $img, -1);
-                Log::write('$destFileName:' . $destFileName);
-                if ($result) {
-                    array_push($tmpNames, $result);
-                } else {
-                    array_push($tmpNames, "not supported");
-                }
-
+            //创建保存位置
+            if (!file_exists($savePath)) {
+                mkdir($savePath, 0777, true);
             }
+            //写入文件
+            $tmpName = $savePath . rand(1, 10000) . time() . strrchr($imgUrl, '.');
+            try {
+                File::writeFile($tmpName, $img, "a");
+
+                array_push($tmpNames, __ROOT__ . '/' . $tmpName);
+            } catch (\Exception $e) {
+                array_push($tmpNames, "error");
+            }
+
 
         }
         /**
@@ -342,43 +323,24 @@ class UeditorController extends AdminBaseController
         $action = htmlspecialchars($_REQUEST["action"]);
 
         if ($action == "get") {
-            if (!defined('SAE_TMP_PATH')) {
-                $files = array();
-                foreach ($paths as $path) {
+            $files = array();
+            foreach ($paths as $path) {
 
-                    //$dir = new Dir();
-                    //$tmp = $dir->getfiles($path);
+                //$dir = new Dir();
+                //$tmp = $dir->getfiles($path);
 
-                    $tmp = File::getFiles($path);
-                    if ($tmp) {
-                        $files = array_merge($files, $tmp);
-                    }
-                }
-                if (!count($files)) return;
-                rsort($files, SORT_STRING);
-                $str = "";
-                foreach ($files as $file) {
-                    $str .= __ROOT__ . '/' . $file . "ue_separate_ue";
-                }
-                echo $str;
-            } else {
-                // SAE环境下
-                $st = new \SaeStorage(); // 实例化
-                /*
-                *  getList:获取指定domain下的文件名列表
-                *  return: 执行成功时返回文件列表数组，否则返回false
-                *  参数：存储域，路径前缀，返回条数，起始条数
-                */
-                $num = 0;
-                while ($ret = $st->getList(get_opinion('SaeStorage'), null, 100, $num)) {
-                    foreach ($ret as $file) {
-                        if (preg_match("/\.(gif|jpeg|jpg|png|bmp)$/i", $file))
-
-                            echo $st->getUrl('upload', $file) . "ue_separate_ue";
-                        $num++;
-                    }
+                $tmp = File::getFiles($path);
+                if ($tmp) {
+                    $files = array_merge($files, $tmp);
                 }
             }
+            if (!count($files)) return;
+            rsort($files, SORT_STRING);
+            $str = "";
+            foreach ($files as $file) {
+                $str .= __ROOT__ . '/' . $file . "ue_separate_ue";
+            }
+            echo $str;
 
 
         }

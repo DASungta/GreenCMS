@@ -57,7 +57,7 @@ INSERT INTO `{$db_prefix}link_group` VALUES ('0', 'Home');
 -- Records of {$db_prefix}links
 -- ----------------------------
 INSERT INTO `{$db_prefix}links` VALUES (null, '123', 'http://www.greencms.net/', 'GreenCMS', 'Home', 'GreenCMS首页', '1', '','0');
-INSERT INTO `{$db_prefix}links` VALUES (null, '124', 'http://www.zts1993.com/', 'Z的博客', 'Home', 'Z的博客', '1', '','0');
+INSERT INTO `{$db_prefix}links` VALUES (null, '124', 'http://blog.zts1993.com/', 'Timothy的博客', 'Home', 'Timothy的博客', '1', '','0');
 
 -- ----------------------------
 -- Records of {$db_prefix}menu

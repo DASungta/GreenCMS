@@ -15,7 +15,7 @@ use Think\Log;
 
 
 /**
- * Wordpress导入工具 Beta
+ * Wordpress导入工具
  * Class WordpressEvent
  * @package Common\Event
  */

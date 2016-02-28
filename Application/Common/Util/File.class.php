@@ -20,7 +20,6 @@ class File
 {
 
     /**
-     * 运行于 Sae 和 LAMP
      * @param $filename
      * @return bool
      */
@@ -32,7 +31,6 @@ class File
     }
 
     /**
-     * 运行于 Sae 和 LAMP
      * @param $bytes
      * @return string
      */

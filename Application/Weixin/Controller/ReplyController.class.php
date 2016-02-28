@@ -114,16 +114,11 @@ class ReplyController extends WeixinBaseController
             //   $file_path_full = Upload_PATH . $info['img']['savepath'] . $info['img']['savename'];
             $file_path_full = $info['img']['fullpath'];
 
-            if (!defined('SAE_TMP_PATH')) {
-                // 非SAE环境中
-                $image = new \Think\Image();
-                $image->open($file_path_full);
-                $image->thumb(150, 150)->save($file_path_full);
-                $img_url = "http://" . $_SERVER['SERVER_NAME'] . str_replace('index.php', '', __APP__) . $file_path_full;
-            } else {
-                // SAE环境中
-                $img_url = $file_path_full;
-            }
+
+            $image = new \Think\Image();
+            $image->open($file_path_full);
+            $image->thumb(150, 150)->save($file_path_full);
+            $img_url = "http://" . $_SERVER['SERVER_NAME'] . str_replace('index.php', '', __APP__) . $file_path_full;
 
 
             $Media = new Media();

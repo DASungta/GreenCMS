@@ -50,11 +50,16 @@ class IndexController extends AdminBaseController
     }
 
 
+
+    public function checkTodoKey()
+    {
+        return "checkTodo_".$this->CurrentUser["user_id"];
+    }
+
     public function checkTodo()
     {
-        $checkTodo = S("checkTodo");
+        $checkTodo = S($this->checkTodoKey());
         if (empty($checkTodo)) {
-
 
             $check_res = "";
 
@@ -86,14 +91,14 @@ class IndexController extends AdminBaseController
             }
 
 
-            S("checkTodo", $check_res);
+            S($this->checkTodoKey(), $check_res);
 
 
             die($check_res);
 
         } else {
 
-            die(S("checkTodo"));
+            die(S($this->checkTodoKey()));
 
         }
     }
@@ -101,7 +106,9 @@ class IndexController extends AdminBaseController
 
     public function checkTodoCacheClear()
     {
-        S("checkTodo", null);
+        S($this->checkTodoKey(), null);
     }
+
+
     
 }

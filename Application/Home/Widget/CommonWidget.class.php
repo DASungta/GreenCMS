@@ -9,7 +9,7 @@
 
 namespace Home\Widget;
 
-use Home\Logic\MenuLogic;
+use Common\Logic\MenuLogic;
 use Think\Controller;
 
 /**

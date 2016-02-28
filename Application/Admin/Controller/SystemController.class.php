@@ -30,12 +30,10 @@ class SystemController extends AdminBaseController
         $this->display();
     }
 
-
     public function attach()
     {
         $this->display();
     }
-
 
     public function user()
     {
@@ -55,7 +53,6 @@ class SystemController extends AdminBaseController
         $this->display();
     }
 
-
     /**
      *
      */
@@ -71,7 +68,6 @@ class SystemController extends AdminBaseController
     public function kvset()
     {
 
-
         $this->display();
     }
 
@@ -80,10 +76,14 @@ class SystemController extends AdminBaseController
      */
     public function kvsetHandle()
     {
-        $this->saveKv();
+        S('kv_array', null); //清空缓存
+
+        foreach ($_POST as $key => $value) {
+            set_kv($key, $value);
+        }
+
         $this->success('配置成功');
     }
-
 
     /**
      *
@@ -104,7 +104,6 @@ class SystemController extends AdminBaseController
 
         $this->display();
     }
-
 
     /**
      * 邮箱配置
@@ -141,7 +140,6 @@ class SystemController extends AdminBaseController
 
     }
 
-
     /**
      *
      */
@@ -166,7 +164,6 @@ class SystemController extends AdminBaseController
     {
         $message = "";
 
-
         if (IS_POST) {
             $version = I('post.version');
             $url = Server_API . 'api/update/' . $version . '/';
@@ -178,7 +175,6 @@ class SystemController extends AdminBaseController
                 $json = json_decode(file_get_contents($url), true);
                 if (empty($json)) $this->error('连接升级服务器出错');
             }
-
 
             $this->assign('versions', $json);
             $this->assign('message', $message);
@@ -224,7 +220,6 @@ class SystemController extends AdminBaseController
             File::mkDir(WEB_CACHE_PATH);
             G("WebCache");
             $message .= "清空WEB_CACHE_PATH,用时 " . G("GetJson", "WebCache") . "秒<br />";
-
 
             $file_downloaded = WEB_CACHE_PATH . $target_version_info['file_name'];
             $file = file_get_contents($target_version_info['file_url']);
@@ -284,17 +279,13 @@ class SystemController extends AdminBaseController
                 }
             }
 
-
             $this->updateComplete('升级成功' . $target_version_info['build_to'] . "<br />" . $message);
         } else {
-
 
             $this->error('升级出错');
         }
 
-
     }
-
 
     /**
      * 升级完成
@@ -304,7 +295,6 @@ class SystemController extends AdminBaseController
         $this->assign('action', '升级完成');
         $this->assign('action_name', 'updateComplete');
         $this->assign('message', $message);
-
 
         $Storage = new Storage();
         $Storage::connect();
@@ -318,7 +308,6 @@ class SystemController extends AdminBaseController
         $this->display("updatecomplete");
 
     }
-
 
     /**
      *
@@ -341,7 +330,6 @@ class SystemController extends AdminBaseController
             $extensions_list = $extensions_list . "$value&nbsp;&nbsp;";
         }
 
-
         $info = array(
             '操作系统' => PHP_OS,
             '主机名IP端口' => $_SERVER ['SERVER_NAME'] . ' (' . $_SERVER ['SERVER_ADDR'] . ':' . $_SERVER ['SERVER_PORT'] . ')',
@@ -362,12 +350,10 @@ class SystemController extends AdminBaseController
             '服务器时间' => date("Y年n月j日 H:i:s 秒"),
             '北京时间' => gmdate("Y年n月j日 H:i:s 秒", time() + 8 * 3600),
 
-
             '显示错误信息' => ini_get("display_errors") == "1" ? '√' : '×',
             'register_globals' => get_cfg_var("register_globals") == "1" ? '√' : '×',
             'magic_quotes_gpc' => (1 === get_magic_quotes_gpc()) ? '√' : '×',
             'magic_quotes_runtime' => (1 === get_magic_quotes_runtime()) ? '√' : '×',
-
 
         );
         $this->assign('server_info', $info);
@@ -381,18 +367,13 @@ class SystemController extends AdminBaseController
      */
     public function green()
     {
-        $DEFAULT_ADMIN_THEME = array('AdminLTE' => 'AdminLTE', 'Metronic' => 'Metronic');
-
-        $this->assign('DEFAULT_ADMIN_THEME', gen_opinion_list($DEFAULT_ADMIN_THEME, get_opinion('DEFAULT_ADMIN_THEME', true, "Metronic")));
 
         $this->assign('GreenCMS_Version', GreenCMS_Version);
         $this->assign('GreenCMS_Build', GreenCMS_Build);
 
         $this->display();
 
-
     }
-
 
     public function sns()
     {
@@ -405,32 +386,26 @@ class SystemController extends AdminBaseController
         $this->show(phpinfo());
     }
 
-
     public function db()
     {
 
         $this->assign('db_path', DB_Backup_PATH);
         $this->display();
 
-
     }
-
 
     public function cache()
     {
         $this->assign('HTML_CACHE_ON', (int)get_opinion('HTML_CACHE_ON', true));
   //        $this->assign('DATA_CACHE_TYPE', gen_opinion_list(get_opinion("cache_type"), get_opinion('DATA_CACHE_TYPE', true, "File")));
 
-
         $this->display();
     }
-
 
     public function bugs()
     {
         $this->display();
     }
-
 
     public function bugsHandle()
     {
@@ -443,8 +418,6 @@ class SystemController extends AdminBaseController
 
         echo json_encode($post_info);
 
-
     }
-
 
 }

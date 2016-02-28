@@ -1,7 +1,6 @@
 <?php
 namespace Admin\Controller;
 
-
 /**
  * 扩展控制器
  * 用于调度各个扩展的URL访问需求
@@ -13,7 +12,6 @@ class AddonsController extends AdminBaseController
     {
         parent::__construct();
     }
-
 
     protected $addons = null;
 
@@ -31,7 +29,6 @@ class AddonsController extends AdminBaseController
         }
     }
 
-
     protected function display($templateFile = '', $charset = '', $contentType = '', $content = '', $prefix = '')
     {
 
@@ -47,8 +44,6 @@ class AddonsController extends AdminBaseController
 
         }
 
-
     }
-
 
 }

@@ -13,7 +13,6 @@ use Common\Event\AccessEvent;
 use Common\Event\CountEvent;
 use Common\Event\UpdateEvent;
 
-
 /**
  * Class IndexController
  * @package Admin\Controller
@@ -27,10 +26,8 @@ class IndexController extends AdminBaseController
     {
         $CountEvent = new CountEvent();
 
-
         $this->assign("PostCount", $CountEvent->getPostCount());
         $this->assign("UserCount", $CountEvent->getUserCount());
-
 
         if (get_opinion("oem_info", false, 'original') != 'original') {
             $this->display("oem");
@@ -40,7 +37,6 @@ class IndexController extends AdminBaseController
 
     }
 
-
     /**
      * 返回home
      */
@@ -49,11 +45,10 @@ class IndexController extends AdminBaseController
         $this->redirect('Home/Index/index');
     }
 
-
-
     public function checkTodoKey()
     {
-        return "checkTodo_".$this->CurrentUser["user_id"];
+        $user = $this->CurrentUser;
+        return "checkTodo_" . $user["user_id"];
     }
 
     public function checkTodo()
@@ -74,7 +69,6 @@ class IndexController extends AdminBaseController
                 $check_res .= '<li><a href="' . U("Admin/System/update") . '"><i class="fa fa-laptop"></i> 数据库中版本号与代码中不一致</a></li>';
             }
 
-
             if (!$AccessEvent->checkAccess()) {
                 $check_res .= '<li><a href="' . U("Admin/Access/rolelist") . '"><i class="fa fa-laptop"></i> 需要重建角色权限！</a></li>';
 
@@ -83,16 +77,13 @@ class IndexController extends AdminBaseController
             if (!$AccessEvent->checkNode()) {
                 $check_res .= '<li><a href="' . U("Admin/Access/nodelist") . '"><i class="fa fa-laptop"></i> 需要重建节点！</a></li>';
 
-
             }
 
             if ($check_res == "") {
                 $check_res = "none";
             }
 
-
             S($this->checkTodoKey(), $check_res);
-
 
             die($check_res);
 
@@ -103,12 +94,9 @@ class IndexController extends AdminBaseController
         }
     }
 
-
     public function checkTodoCacheClear()
     {
         S($this->checkTodoKey(), null);
     }
 
-
-    
 }

@@ -21,7 +21,6 @@ abstract class BaseController extends Controller
 {
 
     protected $UserLogic;
-    protected $CurrentUser;
 
     function __construct()
     {
@@ -97,8 +96,9 @@ abstract class BaseController extends Controller
     {
         $user_id = ( int )$_SESSION [get_opinion('USER_AUTH_KEY')];
         $user = $this->UserLogic->detailUser($user_id);
-        $this->CurrentUser = $user;
         $this->assign('user', $user);
+
+        return $user;
     }
 
 

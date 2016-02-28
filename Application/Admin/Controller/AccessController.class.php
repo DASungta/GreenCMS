@@ -9,7 +9,6 @@
 
 namespace Admin\Controller;
 
-
 use Admin\Logic\AccessLogic;
 use Common\Event\AccessEvent;
 use Common\Logic\LogLogic;
@@ -116,7 +115,6 @@ class AccessController extends AdminBaseController
         }
     }
 
-
     // 角色列表
     /**
      *
@@ -126,7 +124,6 @@ class AccessController extends AdminBaseController
         $this->assign('rolelist', D('Access', 'Logic')->roleList());
         $this->display();
     }
-
 
     // 节点列表
     /**
@@ -148,7 +145,6 @@ class AccessController extends AdminBaseController
         $this->display();
     }
 
-
     public function rebuildAccess()
     {
         D('Node')->where('1')->delete(); //清空
@@ -157,7 +153,6 @@ class AccessController extends AdminBaseController
         $Access = new AccessEvent();
         $Access->initAdmin();
         $Access->initWeixin();
-
 
         $this->success("重建完成，请重新分配权限");
 
@@ -640,13 +635,11 @@ class AccessController extends AdminBaseController
 
         }
 
-
         $this->assign('pager_bar', $pager_bar);
 
         $this->assign('log', $log);
 
         $this->display();
-
 
     }
 
@@ -673,7 +666,6 @@ class AccessController extends AdminBaseController
 
         $this->display("profile");
 
-
     }
 
     public function log()
@@ -682,11 +674,9 @@ class AccessController extends AdminBaseController
         $page = I('get.page', 20);
         $where = I('get.');
 
-
         $LogLogic = new LogLogic();
 
         $count = $LogLogic->countLog($where); // 查询满足要求的总记录数
-
 
         if ($count != 0) {
 
@@ -696,7 +686,6 @@ class AccessController extends AdminBaseController
             $log_list = $LogLogic->getLogList($limit, $where);
 
         }
-
 
         $this->assign('pager_bar', $pager_bar);
         $this->assign('log_list', $log_list);

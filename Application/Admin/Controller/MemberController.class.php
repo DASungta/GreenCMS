@@ -14,7 +14,6 @@ use Common\Event\CountEvent;
 class MemberController extends AdminBaseController
 {
 
-
     /**
      * 修改密码页面
      */
@@ -35,33 +34,22 @@ class MemberController extends AdminBaseController
 
         $uid = $this->_currenUserId();
 
-        $UserLogic = new UserLogic();
-
-        $res = $UserLogic->changePassword($uid, I('post.opassword'), I('post.password'));
+        $res = $this->UserLogic->changePassword($uid, I('post.opassword'), I('post.password'));
 
         $this->array2Response($res);
 
     }
-
 
     /**
      * 用户信息
      */
     public function profile()
     {
-        $uid = $this->_currenUserId();
-
         $CountEvent = new CountEvent();
 
-        $user = $this->UserLogic->detailUser($uid);
-
-        $this->assign("PostCount", $CountEvent->getPostCount(array("user_id" => $uid)));
-
-        $this->assign('user', $user);
+        $this->assign("PostCount", $CountEvent->getPostCount(array("user_id" => $this->_currenUserId())));
 
         $this->display();
-
-
     }
 
     /**
@@ -72,11 +60,9 @@ class MemberController extends AdminBaseController
     {
         $this->_checkCurrentUser($uid);
 
-        $UserLogic = new UserLogic();
-
         $post_data = I('post.');
 
-        $res = $UserLogic->updateUser($uid, $post_data);
+        $res = $this->UserLogic->updateUser($uid, $post_data);
 
         $this->array2Response($res);
 
@@ -102,6 +88,5 @@ class MemberController extends AdminBaseController
         $this->display();
 
     }
-
 
 }

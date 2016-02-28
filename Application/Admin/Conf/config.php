@@ -202,8 +202,8 @@ $config_admin = array(
     //'DEFAULT_THEME' => get_opinion("DEFAULT_ADMIN_THEME", true, "AdminLTE"),
 
     'DEFAULT_THEME' => "AdminLTE",
-    //     'DEFAULT_THEME' => "Metronic",
-);
+    'TMPL_CACHE_ON' => false,
+ );
 
 
 return array_merge($config_admin, $menu_arr);

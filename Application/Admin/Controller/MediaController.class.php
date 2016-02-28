@@ -30,7 +30,6 @@ class MediaController extends AdminBaseController
         //gc_disable();
     }
 
-
     /**
      *
      */
@@ -78,7 +77,6 @@ class MediaController extends AdminBaseController
         return $opts;
     }
 
-
     /**
      *
      */
@@ -92,7 +90,6 @@ class MediaController extends AdminBaseController
         foreach ($root as $value) {
 
             if (in_array($value, $filter_array)) continue;
-
 
             $root_info_temp = array();
             $root_info_temp['name'] = $value;
@@ -138,16 +135,13 @@ class MediaController extends AdminBaseController
             $files_list_temp['create_time'] = date("Y-m-d H:i:s", File::filectime($value));
             $files_list_temp['mod_time'] = date("Y-m-d H:i:s", File::filemtime($value));
 
-
             $files_list[] = $files_list_temp;
 
         }
 
-
         $this->assign('backup', $files_list);
         $this->display();
     }
-
 
     public function delFileHandle($id)
     {
@@ -163,10 +157,8 @@ class MediaController extends AdminBaseController
     public function restoreFileHandle($id = '')
     {
 
-
         $file_name = base64_decode($id);
         $System = new SystemEvent();
-
 
         $zip = new \ZipArchive; //新建一个ZipArchive的对象
         if ($zip->open($file_name) === true) {
@@ -185,7 +177,6 @@ class MediaController extends AdminBaseController
 
         $this->success('还原成功');
     }
-
 
     public function downFile()
     {
@@ -211,6 +202,5 @@ class MediaController extends AdminBaseController
         header("Content-Length: " . filesize($filePath));
         readfile($filePath);
     }
-
 
 }

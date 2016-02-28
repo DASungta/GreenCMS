@@ -36,9 +36,7 @@ class PostsController extends AdminBaseController
         CacheManager::clearPost();
         CacheManager::clearTag();
 
-
     }
-
 
     /**
      * index页面操作筛选
@@ -50,7 +48,6 @@ class PostsController extends AdminBaseController
         if (I('post.keyword') != '') {
             $this->redirect('Admin/Posts/' . I('post.post_type', 'single'), array('keyword' => I('post.keyword')));
         }
-
 
         if (I('post.delAll') == 1) {
             $post_ids = I('post.posts');
@@ -98,9 +95,7 @@ class PostsController extends AdminBaseController
             $this->redirect('Admin/Posts/add');
         }
 
-
     }
-
 
     /**
      * 页面列表群
@@ -154,7 +149,6 @@ class PostsController extends AdminBaseController
             $where['user_id'] = get_current_user_id();
         }
 
-
         //处理详细信息 搜索，指定TAG CAT文章
         if ($cat != '') {
             $post_ids = $CatsLogic->getPostsIdWithChildren($cat);
@@ -175,7 +169,6 @@ class PostsController extends AdminBaseController
 
         }
 
-
         $PostsLogic = new PostsLogic();
         $count = $PostsLogic->countAll($post_type, $where, $post_ids); // 查询满足要求的总记录数
 
@@ -186,14 +179,11 @@ class PostsController extends AdminBaseController
             $posts_list = $PostsLogic->getList($limit, $post_type, $order, true, $where, $post_ids);
         }
 
-
         $cats = $CatsLogic->category();
         $tags = $TagsLogic->select();
 
-
         $this->assign("cats", $cats);
         $this->assign("tags", $tags);
-
 
         $this->assign('post_type', $post_type);
         $this->assign('action', $name . $key . $cat . $tag . get_real_string($post_type) . '列表');
@@ -285,13 +275,9 @@ class PostsController extends AdminBaseController
         die();
     }
 
-
-
-
     /**
      * 文章操作
      */
-
 
     /**
      * 添加文章的操作
@@ -307,7 +293,6 @@ class PostsController extends AdminBaseController
         $this->posts($post_id, true);
         die();
     }
-
 
     /**
      * @param $id
@@ -347,13 +332,11 @@ class PostsController extends AdminBaseController
                     }
                     $tags_temp = $TagsLogic->where(array("tag_name" => $tag_name))->find();
 
-
                     D("Post_tag")->add(array("tag_id" => $tags_temp["tag_id"], "post_id" => $post_data['post_id']));
 
 //                D("Post_tag")->add(array("tag_id" => $tag_name, "post_id" => $post_data['post_id']));
                 }
             }
-
 
             if (!empty($_POST['cats'])) {
                 foreach ($_POST['cats'] as $cat_id) {
@@ -382,7 +365,6 @@ class PostsController extends AdminBaseController
 
             CacheManager::clearPostCacheById($id);
 
-
             if ($Posts->where(array("post_id" => $post_data["post_id"]))->save($post_data)) {
                 $this->jsonReturn(1, "已经更新", $url);
             } else {
@@ -393,13 +375,11 @@ class PostsController extends AdminBaseController
             }
         } else {
 
-
             $this->initEditor($id);
             //投稿员只能看到自己的
             if (!$this->noVerify()) {
                 $where['user_id'] = get_current_user_id();
             }
-
 
             $where["post_id"] = $post_id;
 
@@ -407,7 +387,6 @@ class PostsController extends AdminBaseController
             if (empty($post)) {
                 $this->error("不存在该记录");
             }
-
 
             if ($new_post) {
                 $post['post_status'] = 'publish';
@@ -523,7 +502,6 @@ class PostsController extends AdminBaseController
     {
         $PostsLogic = new PostsLogic();
 
-
         $post_data = $this->dataHandle();
 
         if (($this->noverify() == false) || (I('post.post_status') == 'unverified')) {
@@ -531,7 +509,6 @@ class PostsController extends AdminBaseController
         } else {
             $post_data['post_status'] = 'publish';
         }
-
 
         if ($post_id = $PostsLogic->relation(true)->add($post_data)) { //, 'Logic'
 
@@ -551,20 +528,7 @@ class PostsController extends AdminBaseController
             $this->jsonReturn(0, "发布失败");
         }
 
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * ==============================================================
@@ -604,7 +568,6 @@ class PostsController extends AdminBaseController
             $this->error($message . '失败');
         }
 
-
     }
 
     /**
@@ -632,7 +595,6 @@ class PostsController extends AdminBaseController
     public function del($id = 0)
     {
         $PostsLogic = new PostsLogic();
-
 
         if ($PostsLogic->del($id)) {
             $this->success('永久删除成功');
@@ -665,7 +627,6 @@ class PostsController extends AdminBaseController
         $this->changePostStatue($id, "publish", "恢复");
     }
 
-
     /**
      * 清空回收站
      */
@@ -682,14 +643,6 @@ class PostsController extends AdminBaseController
 
     }
 
-
-
-
-
-
-
-
-
     /**
      * ==============================================================
      * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -697,7 +650,6 @@ class PostsController extends AdminBaseController
      * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
      * ==============================================================
      */
-
 
     /**
      * 分类
@@ -710,7 +662,6 @@ class PostsController extends AdminBaseController
         foreach ($cat_list as $key => $value) {
             $cat_list[$key]["cat_father"] = $CatsLogic->detail($value["cat_father"]);
         }
-
 
         $this->assign('category', $cat_list);
         $this->display();
@@ -793,7 +744,6 @@ class PostsController extends AdminBaseController
         }
     }
 
-
     public function preDelCategory($id = -1)
     {
         $CatsLogic = new CatsLogic();
@@ -854,7 +804,6 @@ class PostsController extends AdminBaseController
 
         $TagsLogic = new TagsLogic();
 
-
         $count = $TagsLogic->countAll(); // 查询满足要求的总记录数
 
         if ($count != 0) {
@@ -863,7 +812,6 @@ class PostsController extends AdminBaseController
             $limit = $Page->firstRow . ',' . $Page->listRows;
             $tags = $TagsLogic->selectWithPostsCount($limit);
         }
-
 
         $this->assign('tags', $tags);
         $this->assign('pager', $pager_bar);
@@ -886,7 +834,6 @@ class PostsController extends AdminBaseController
     public function addTagHandle()
     {
         $TagsLogic = new TagsLogic();
-
 
         $tag_data['tag_name'] = I('post.tag_name');
         $tag_data['tag_slug'] = urlencode(I('post.tag_slug'));
@@ -911,7 +858,6 @@ class PostsController extends AdminBaseController
     public function editTag($id)
     {
         $TagsLogic = new TagsLogic();
-
 
         $action = '编辑';
         $this->assign('action', $action);
@@ -965,13 +911,11 @@ class PostsController extends AdminBaseController
         $TagsLogic = new TagsLogic();
         $PostsLogic = new PostsLogic();
 
-
         $process_method = I('post.process_method');
 
         if ($process_method == 'totag' && I('post.newtag') == $id) {
             $this->error("移动后的标签不能和当前分类相同");
         }
-
 
         if ($TagsLogic->delete($id)) {
             if (D('Post_tag')->where(array("tag_id" => $id))->find()) {
@@ -994,10 +938,7 @@ class PostsController extends AdminBaseController
 
         $this->success('标签删除成功', U('Admin/Posts/tag'));
 
-
     }
-
-
 
     /**
      * ==============================================================
@@ -1006,7 +947,6 @@ class PostsController extends AdminBaseController
      * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
      * ==============================================================
      */
-
 
     /**
      * 通用列表页面
@@ -1041,10 +981,8 @@ class PostsController extends AdminBaseController
         $count = $PostsLogic->countAll('page', $where); // 查询满足要求的总记录数
         $res['page']['publish'] = $count;
 
-
         $this->jsonReturn(1, $res);
 
     }
-
 
 }

@@ -20,7 +20,6 @@ use Think\Verify;
 class LoginController extends BaseController
 {
 
-
     public function __construct()
     {
         parent::__construct();
@@ -60,11 +59,9 @@ class LoginController extends BaseController
                     $this->redirect('Admin/Index/index');
                 }
 
-
             }
 
         }
-
 
     }
 
@@ -151,7 +148,6 @@ class LoginController extends BaseController
         $registerRes = $UserEvent->register($username, $nickname, $password, $email);
         $this->json2Response($registerRes);
 
-
     }
 
     /**
@@ -199,7 +195,6 @@ class LoginController extends BaseController
             'useCurve' => true,
             'useNoise' => true,
         );
-
 
         $Verify = new Verify($config);
         $Verify->entry("AdminLogin");

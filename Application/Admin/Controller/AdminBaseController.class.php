@@ -24,7 +24,7 @@ class AdminBaseController extends BaseController
     private $module_name = '';
     private $action_name = '';
     private $group_name = '';
-
+    protected $CurrentUser;
 
     /**
      *
@@ -38,12 +38,11 @@ class AdminBaseController extends BaseController
 
         $this->_currentPostion();
 
-        $this->_currentUser();
+        $this->CurrentUser = $this->_currentUser();
 
         $this->_recordCurrentPage();
 
-//        $this->customConfig();
-        C('TMPL_CACHE_ON',false);
+//        C('TMPL_CACHE_ON', false);
 
     }
 
@@ -63,11 +62,10 @@ class AdminBaseController extends BaseController
             $httpQuery = $parsedHttpReferer['query'];
             parse_str($httpQuery, $parsedHttpQuery);
 
-
             if ($parsedHttpQuery['a'] == 'login' && $parsedHttpQuery['c'] == 'login') {
                 //防止循环跳转
                 $UserEvent = new \Common\Event\UserEvent();
-                $logoutRes = $UserEvent->logout();
+                $UserEvent->logout();
                 $this->error(L('_VALID_ACCESS_'));
 
             } else {
@@ -75,11 +73,9 @@ class AdminBaseController extends BaseController
 
             }
 
-
         }
 
     }
-
 
     /**
      *
@@ -144,12 +140,9 @@ class AdminBaseController extends BaseController
 
             $user_id = get_current_user_id();
 
-
-
                 $group_level_1 = get_opinion('group_level_1');
                 $admin_level_2 = get_opinion('admin_level_2');
                 $admin_level_3 = get_opinion('admin_level_3');
-
 
                 $this->group_name = $group_level_1[MODULE_NAME] ? $group_level_1[MODULE_NAME] : "Admin";
                 $this->module_name = $admin_level_2[CONTROLLER_NAME] ? $admin_level_2[CONTROLLER_NAME] : CONTROLLER_NAME;
@@ -168,38 +161,15 @@ class AdminBaseController extends BaseController
                 $log_data['log_type'] = 1;
                 $log_data['user_ip'] = get_client_ip();
 
-
                 //Log::write( arr2str($log_data));
                 $LogLogic->data($log_data)->add();
                 //Log::write( $LogLogic->getlastsql());
 
             }
 
-
             parent::__destruct();
 
         }
     */
-
-    public function isSuperAdmin()
-    {
-        $uid = ( int )$_SESSION [get_opinion('USER_AUTH_KEY')];
-        if ($uid == 1) return true;
-        else return false;
-    }
-
-    /**
-     *
-     */
-    protected function saveKv()
-    {
-        S('kv_array', null); //清空缓存
-
-        foreach ($_POST as $key => $value) {
-            set_kv($key, $value);
-        }
-
-
-    }
 
 }

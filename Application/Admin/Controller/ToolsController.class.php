@@ -67,7 +67,6 @@ class ToolsController extends AdminBaseController
                 $Wordpress->tagImport($file_path_full);
                 $Wordpress->postImport($file_path_full);
 
-
                 File::delFile($file_path_full);
                 die();
                 $this->success('导入完成');
@@ -76,9 +75,7 @@ class ToolsController extends AdminBaseController
 
         }
 
-
     }
-
 
     /**
      *
@@ -99,20 +96,16 @@ class ToolsController extends AdminBaseController
             $files_list_temp['create_time'] = date("Y-m-d H:i:s", File::filectime($value));
             $files_list_temp['mod_time'] = date("Y-m-d H:i:s", File::filemtime($value));
 
-
             $files_list[] = $files_list_temp;
 
         }
 
         $files_list = array_sort($files_list, "mod_time");
 
-
         $this->assign('logs_list', $files_list);
         $this->display();
 
-
     }
-
 
     public function logClearHandle()
     {
@@ -120,7 +113,6 @@ class ToolsController extends AdminBaseController
         $this->success("清除成功");
 
     }
-
 
     public function downFile()
     {
@@ -130,7 +122,6 @@ class ToolsController extends AdminBaseController
         }
 
         $filename = base64_decode($_GET['id']);
-
 
         $filePath = $filename;
 
@@ -143,7 +134,6 @@ class ToolsController extends AdminBaseController
         header("Content-Length: " . filesize($filePath));
         readfile($filePath);
     }
-
 
     /*文章统计*/
     public function count()
@@ -166,7 +156,6 @@ class ToolsController extends AdminBaseController
             }
         }
 
-
         $UserLogic = new UserLogic();
         $PostsLogic = new PostsLogic();
 
@@ -185,6 +174,5 @@ class ToolsController extends AdminBaseController
         $this->assign("month_end", $month_end);
         $this->display('count');
     }
-
 
 }

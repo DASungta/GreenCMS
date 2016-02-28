@@ -20,10 +20,8 @@ use Think\Upload;
 class UeditorController extends AdminBaseController
 {
 
-
     private $post_id = 0;
     private $sub_name = array('date', 'Y/m-d');
-
 
     /**
      *
@@ -33,7 +31,6 @@ class UeditorController extends AdminBaseController
         parent::__construct();
 
         date_default_timezone_set("Asia/Shanghai");
-
 
         $this->post_id = (I('param.post_id', 0));
 
@@ -47,7 +44,6 @@ class UeditorController extends AdminBaseController
     {
         // $this->display();
     }
-
 
     /**
      *
@@ -95,14 +91,12 @@ class UeditorController extends AdminBaseController
     public function getContent()
     {
 
-
         echo '<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
             <script src="' . __ROOT__ . '/Extend/Ueditor/ueditor.parse.js" type="text/javascript"></script>
             <script>' . " uParse('.content',{
                   'highlightJsUrl':'" . __ROOT__ . "/Extend/Ueditor/third-party/SyntaxHighlighter/shCore.js',
                   'highlightCssUrl':" . __ROOT__ . "/Extend/Ueditor/third-party/SyntaxHighlighter/shCoreDefault.css'
               })</script>";
-
 
         $content = htmlspecialchars(stripslashes($_REQUEST ['myEditor']));
 
@@ -120,7 +114,6 @@ class UeditorController extends AdminBaseController
     public function fileUp()
     {
         // header("Content-Type: text/html; charset=utf-8");
-
 
         $config = array(
             "savePath" => 'File/',
@@ -154,9 +147,7 @@ class UeditorController extends AdminBaseController
          * }
          */
 
-
         //save img info here
-
 
         /**
          * 向浏览器返回数据json数据
@@ -215,7 +206,6 @@ class UeditorController extends AdminBaseController
                 continue;
             }
 
-
             //获取请求头
             $heads = get_headers($imgUrl);
             //死链检测
@@ -223,7 +213,6 @@ class UeditorController extends AdminBaseController
                 array_push($tmpNames, "get_headers error");
                 continue;
             }
-
 
             //格式验证(扩展名验证和Content-Type验证)
             $fileType = strtolower(strrchr($imgUrl, '.'));
@@ -256,7 +245,6 @@ class UeditorController extends AdminBaseController
 
             $savePath = $config['savePath'];
 
-
             //创建保存位置
             if (!file_exists($savePath)) {
                 mkdir($savePath, 0777, true);
@@ -270,7 +258,6 @@ class UeditorController extends AdminBaseController
             } catch (\Exception $e) {
                 array_push($tmpNames, "error");
             }
-
 
         }
         /**
@@ -288,7 +275,6 @@ class UeditorController extends AdminBaseController
         $return_data['srcUrl'] = $uri;
 
         $this->ajaxReturn($return_data);
-
 
         //      echo "{'url':'" . implode("ue_separate_ue", $tmpNames) . "','tip':'远程图片抓取成功！','srcUrl':'" . $uri . "'}";
     }
@@ -314,7 +300,6 @@ class UeditorController extends AdminBaseController
     {
 
         header("Content-Type: text/html; charset=utf-8");
-
 
         //需要遍历的目录列表，最好使用缩略图地址，否则当网速慢时可能会造成严重的延时
         $paths = array(Upload_PATH, 'upload1/');
@@ -342,9 +327,7 @@ class UeditorController extends AdminBaseController
             }
             echo $str;
 
-
         }
-
 
     }
 
@@ -375,7 +358,6 @@ class UeditorController extends AdminBaseController
             $state = "ERROR" . $upload->getError();
         }
 
-
         /**
          * 得到上传文件所对应的各个参数,数组结构
          * array(1) {
@@ -393,7 +375,6 @@ class UeditorController extends AdminBaseController
          * }
          */
 
-
         /**
          * 向浏览器返回数据json数据
          * {
@@ -404,7 +385,6 @@ class UeditorController extends AdminBaseController
          * }
          */
 
-
         //save img attch info
 
         $return_data['url'] = $info['upfile']['urlpath'];
@@ -413,7 +393,6 @@ class UeditorController extends AdminBaseController
         $return_data['state'] = $state;
 
         $this->ajaxReturn($return_data);
-
 
     }
 }

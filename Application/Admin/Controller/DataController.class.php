@@ -33,7 +33,6 @@ class DataController extends AdminBaseController
 
     }
 
-
     /**
      * 列出系统中所有数据库表信息
      * For MySQL
@@ -268,11 +267,9 @@ class DataController extends AdminBaseController
             if (empty($sqlFiles) || count($sqlFiles) == 0 || $_POST['sqlFiles'] == "")
                 $this->jsonReturn(0, "请选择要打包的sql文件");
 
-
             $files = isset($_SESSION['cacheSendSql']['files']) ? $_SESSION['cacheSendSql']['files'] : self::getSqlFilesGroups();
             $to = $_SESSION['cacheSendSql']['to'];
             $sum = $_SESSION['cacheSendSql']['count'];
-
 
             $zipOut = "sqlBackup.zip";
             if ($zip_res = File::zip($sqlFiles, $zipOut, WEB_CACHE_PATH)) {
@@ -288,12 +285,10 @@ class DataController extends AdminBaseController
                 $GreenMail = new GreenMail();
                 $res = $GreenMail->send($GreenMailContent);
 
-
             } else {
 
                 $this->jsonReturn(0, "发送失败");
             }
-
 
             File::delAll(WEB_CACHE_PATH . $zipOut); //删除已发送附件
 
@@ -415,7 +410,6 @@ class DataController extends AdminBaseController
         $this->display();
     }
 
-
     /**
      * @return array
      */
@@ -439,7 +433,6 @@ class DataController extends AdminBaseController
         return array("list" => $list, "size" => File::byteFormat($size));
     }
 
-
     /**
      * @return bool
      */
@@ -447,7 +440,6 @@ class DataController extends AdminBaseController
     {
         if (!IS_POST)
             return false;
-
 
         $zipFiles = explode(',', $_POST['zipFiles']);
 
@@ -520,7 +512,6 @@ class DataController extends AdminBaseController
         readfile($filePath);
     }
 
-
     /**
      * For Mysql only
      */
@@ -566,19 +557,16 @@ class DataController extends AdminBaseController
 
             $total_size['table'] = File::byteFormat($total_size['table']);
 
-
             $total_size['free'] = File::byteFormat($total_size['free']);
             $total_size['table'] = File::byteFormat($total_size['table']);
             $total_size['data'] = File::byteFormat($total_size['data']);
             $total_size['index'] = File::byteFormat($total_size['index']);
-
 
             $this->assign("list", $tables);
             $this->assign("totalsize", $total_size);
             $this->display();
         }
     }
-
 
     /**
      *
@@ -633,7 +621,6 @@ class DataController extends AdminBaseController
             $SystemEvent = new SystemEvent;
             $SystemEvent->clearCacheAll();
 
-
             $this->success("清除成功");
         } else {
 
@@ -642,13 +629,11 @@ class DataController extends AdminBaseController
         }
     }
 
-
     public function clearAll()
     {
         $SystemEvent = new SystemEvent;
         $SystemEvent->clearCacheAll();
         $this->success("清除成功");
     }
-
 
 }

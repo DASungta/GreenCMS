@@ -8,10 +8,8 @@
 
 namespace Admin\Controller;
 
-
 class EmptyController extends AdminBaseController
 {
-
 
     /**
      * 空控制器实现
@@ -32,5 +30,4 @@ class EmptyController extends AdminBaseController
 
     }
 
-
-} 
+}

@@ -58,7 +58,7 @@ class SystemController extends AdminBaseController
      */
     public function saveHandle()
     {
-        $this->saveConfig();
+        $this->saveConfigs();
         $this->success('配置成功');
     }
 

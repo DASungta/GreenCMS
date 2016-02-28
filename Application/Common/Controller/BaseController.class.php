@@ -36,7 +36,7 @@ abstract class BaseController extends Controller
      * 获取主题个性设置
      * 缓存key ： $theme_name . '_theme_config'
      */
-    protected function themeConfig()
+    protected function _themeConfig()
     {
         $theme_name = get_kv('home_theme');
         if (S($theme_name . '_theme_config')) {

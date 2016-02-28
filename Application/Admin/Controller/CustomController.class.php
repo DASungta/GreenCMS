@@ -780,7 +780,7 @@ str;
      */
     public function uninstall()
     {
-        $addonsModel = M('Addons');
+        $addonsModel = D("Addons");
         $id = trim(I('id'));
         $db_addons = $addonsModel->find($id);
         $class = get_addon_class($db_addons['name']);
@@ -846,7 +846,7 @@ str;
      */
     public function edithook($id)
     {
-        $hook = M('Hooks')->field(true)->find($id);
+        $hook = D("Hooks")->field(true)->find($id);
         $this->assign('info', $hook);
         $this->action = '编辑钩子';
         $this->display('edithook');
@@ -858,7 +858,7 @@ str;
      */
     public function delhook($id)
     {
-        if (M('Hooks')->delete($id) !== false) {
+        if (D("Hooks")->delete($id) !== false) {
             $this->success('删除成功');
         } else {
             $this->error('删除失败');

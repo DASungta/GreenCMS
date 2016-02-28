@@ -126,7 +126,7 @@ class AdminBaseController extends BaseController
     /**
      *
      */
-    public function saveConfig()
+    public function saveConfigs()
     {
         $post_data = I('post.');
         foreach ($post_data as $name => $value) {

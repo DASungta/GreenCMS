@@ -1,9 +1,6 @@
 <?php
 namespace Home\Controller;
 
-use Think\Controller;
-use Home\Controller\HomeBaseController;
-
 /**
  * 扩展控制器
  * 用于调度各个扩展的URL访问需求

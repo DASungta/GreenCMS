@@ -41,7 +41,7 @@ class CommonWidget extends Controller
             $this->assign('home_menu', $home_menu);
             $menu = $this->fetch('Widget:mainMenu');
 
-            S("Widget_mainMenu", $menu, DEFAULT_EXPIRES_TIME);
+            S("Widget_mainMenu", $menu);
             echo $menu;
 
         } else {

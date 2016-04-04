@@ -9,11 +9,11 @@
 
 namespace Home\Widget;
 
-use Common\Util\Category;
-use Home\Logic\MenuLogic;
-
 use Common\Logic\CatsLogic;
+use Common\Logic\MenuLogic;
+use Common\Logic\PostsLogic;
 use Common\Logic\TagsLogic;
+use Common\Util\Category;
 use Think\Controller;
 
 /**
@@ -31,8 +31,9 @@ class WidgetWidget extends Controller
 
     public function recentPost()
     {
+        $PostsLogic = new PostsLogic();
 
-        $post_list = D('Posts')->cache(true)->order('post_id')->limit(4)->relation(false)->select();
+        $post_list = $PostsLogic->getList(4, 'single', 'post_date desc', false);
 
         $this->assign('list', $post_list);
 
@@ -75,7 +76,7 @@ class WidgetWidget extends Controller
             $this->assign('list', $CatList->category());
             $categories = $this->fetch('Widget:categories');
 
-            S("Widget_categories", $categories, DEFAULT_EXPIRES_TIME);
+            S("Widget_categories", $categories, 30);
             echo $categories;
 
         } else {
@@ -102,7 +103,7 @@ class WidgetWidget extends Controller
 
             $tag = $this->fetch('Widget:tag');
 
-            S("Widget_tag", $tag, DEFAULT_EXPIRES_TIME);
+            S("Widget_tag", $tag, 30);
             echo $tag;
 
         } else {
@@ -129,8 +130,10 @@ class WidgetWidget extends Controller
     /**
      * 父类与子类分类列表
      * @usage {:W('Widget/catSidebar',array("cat_id"=>$cat_id))}
+     * @param int $cat_id
+     * @param string $default_title
      */
-    public function catSidebar($cat_id = 0, $default_title)
+    public function catSidebar($cat_id = 0, $default_title = "")
     {
 
         if ($cat_id == null) {

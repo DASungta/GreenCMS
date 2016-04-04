@@ -21,6 +21,13 @@ use Common\Util\File;
 abstract class HomeBaseController extends BaseController
 {
 
+
+    /**
+     * @var int
+     */
+    protected $pager;
+
+
     /**
      * Home模块基础类控制器构造
      */
@@ -31,6 +38,7 @@ abstract class HomeBaseController extends BaseController
 //        $this->customConfig();
         $this->_themeConfig();
 
+        $this->pager = get_opinion('PAGER');
 
     }
 

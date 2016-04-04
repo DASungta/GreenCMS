@@ -189,7 +189,7 @@ function compile($filename)
  * 获取模版文件 格式 资源://模块@主题/控制器/操作
  * @param string $template
  * @param string $layer 视图层（目录）名称
- * @internal param string $name 模版资源地址
+ * @param string $name 模版资源地址
  * @return string
  */
 function T($template = '', $layer = '')

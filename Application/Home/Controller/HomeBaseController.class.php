@@ -10,8 +10,8 @@
 namespace Home\Controller;
 
 use Common\Controller\BaseController;
-use Think\Hook;
 use Common\Util\File;
+use Think\Hook;
 
 /**
  * Home模块基础类控制器
@@ -52,8 +52,9 @@ abstract class HomeBaseController extends BaseController
      */
     public function if404($info, $message = "")
     {
-        if (empty($info))
+        if (empty($info)) {
             $this->error404($message);
+        }
     }
 
 

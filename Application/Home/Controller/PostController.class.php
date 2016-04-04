@@ -23,7 +23,7 @@ class PostController extends HomeBaseController
 
     /**
      * 文章单页显示 支持年月日限定
-     * @param $info 指定单页的信息
+     * @param int $info 指定单页的信息
      */
     public function single($info = -1)
     {
@@ -51,7 +51,7 @@ class PostController extends HomeBaseController
 
     /**
      * 页面单页显示 支持年月日限定
-     * @param $info
+     * @param int $info
      */
     public function page($info = -1)
     {
@@ -98,12 +98,11 @@ class PostController extends HomeBaseController
     }
     /**
      * 未知类型单页显示 支持年月日限定
-     * @param $method 魔术方法名称 即文章类型
+     * @param string $method 魔术方法名称 即文章类型
      * @param $args
      */
     public function _empty($method, $args)
     {
-        //TODO 通用模板机制
 
         $Posts = new PostsLogic();
 

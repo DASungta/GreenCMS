@@ -32,7 +32,7 @@ class TagController extends HomeBaseController
 
     /**
      * 查询指定标签的详细信息
-     * @param $info  detail 查询的 id 或者slug
+     * @param int $info  detail 查询的 id 或者slug
      */
     public function detail($info)
     {
@@ -68,7 +68,7 @@ class TagController extends HomeBaseController
 
     /**
      * //TODO 未知类型TAG显示
-     * @param $method 魔术方法名称 即Tag模板类型
+     * @param string $method 魔术方法名称 即Tag模板类型
      * @param $args
      */
     public function _empty($method, $args)

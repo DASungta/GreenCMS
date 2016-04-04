@@ -72,7 +72,6 @@ class ArchiveController extends HomeBaseController
 
     /**
      * 文章归档 支持年月日参数传递 和用户id
-     * @param null 文章归档
      */
     public function single()
     {
@@ -156,7 +155,7 @@ class ArchiveController extends HomeBaseController
 
         $PostsLogic = new PostsLogic();
 
-        $count = $PostsLogic->countAll($post_type, $map); // 查询满足要求的总记录数
+        $count = $PostsLogic->countAll($post_type, $map);
 
         ($count == 0) ? $res404 = 0 : $res404 = 1;
         if ($count != 0) {

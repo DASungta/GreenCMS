@@ -24,7 +24,6 @@ class CatController extends HomeBaseController
 {
 
     /**
-     * @param null 无实现
      */
     public function index()
     {
@@ -58,7 +57,7 @@ class CatController extends HomeBaseController
 
         if (!empty($posts_id)) {
 
-            $Page = new GreenPage($count, get_opinion('PAGER'));
+            $Page = new GreenPage($count, $this->pager);
             $pager_bar = $Page->show();
             $limit = $Page->firstRow . ',' . $Page->listRows;
 
@@ -108,7 +107,7 @@ class CatController extends HomeBaseController
         ($count == 0) ? $res404 = 0 : $res404 = 1;
 
         if (!empty($posts_id)) {
-            $Page = new GreenPage($count, get_opinion('PAGER'));
+            $Page = new GreenPage($count, $this->pager);
             $pager_bar = $Page->show();
             $limit = $Page->firstRow . ',' . $Page->listRows;
 
@@ -140,7 +139,7 @@ class CatController extends HomeBaseController
 
     /**
      * 未知类型单页显示 支持年月日限定
-     * @param $method 魔术方法名称 即文章类型
+     * @param  string $method 魔术方法名称 即文章类型
      * @param $args
      */
     public function _empty($method, $args)

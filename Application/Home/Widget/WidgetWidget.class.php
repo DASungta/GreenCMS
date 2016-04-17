@@ -9,8 +9,9 @@
 
 namespace Home\Widget;
 
+use Common\Logic\PostsLogic;
 use Common\Util\Category;
-use Home\Logic\MenuLogic;
+use Common\Logic\MenuLogic;
 
 use Common\Logic\CatsLogic;
 use Common\Logic\TagsLogic;
@@ -31,8 +32,9 @@ class WidgetWidget extends Controller
 
     public function recentPost()
     {
+        $PostsLogic = new PostsLogic();
 
-        $post_list = D('Posts')->cache(true)->order('post_id')->limit(4)->relation(false)->select();
+        $post_list = $PostsLogic->getList(5, 'single', 'post_date desc', false);
 
         $this->assign('list', $post_list);
 
@@ -75,7 +77,7 @@ class WidgetWidget extends Controller
             $this->assign('list', $CatList->category());
             $categories = $this->fetch('Widget:categories');
 
-            S("Widget_categories", $categories, DEFAULT_EXPIRES_TIME);
+            S("Widget_categories", $categories, 10);
             echo $categories;
 
         } else {
@@ -102,7 +104,7 @@ class WidgetWidget extends Controller
 
             $tag = $this->fetch('Widget:tag');
 
-            S("Widget_tag", $tag, DEFAULT_EXPIRES_TIME);
+            S("Widget_tag", $tag, 10);
             echo $tag;
 
         } else {
@@ -129,14 +131,14 @@ class WidgetWidget extends Controller
     /**
      * 父类与子类分类列表
      * @usage {:W('Widget/catSidebar',array("cat_id"=>$cat_id))}
+     * @param int $cat_id
+     * @param $default_title
      */
     public function catSidebar($cat_id = 0, $default_title)
     {
 
         if ($cat_id == null) {
-            $this->assign('cat_sidebar_title', $default_title); // 赋值数据集
-
-            $CatList = new CatsLogic();
+            $this->assign('cat_sidebar_title', $default_title); 
 
             $Cat = new Category ('Cats', array('cat_id', 'cat_father', 'cat_name', 'cat_name'));
 
@@ -156,13 +158,13 @@ class WidgetWidget extends Controller
                 //无子类处理
                 if ($children['cat_father'] == 0) {
                     //无父类
-                    $this->assign('cat_sidebar_title', $children["cat_name"]); // 赋值数据集
+                    $this->assign('cat_sidebar_title', $children["cat_name"]); 
 
                 } else {
                     //有父类
 
                     $children2 = $Cat->getChildren($children['cat_father']);
-                    $this->assign('cat_sidebar_title', $children2["cat_name"]); // 赋值数据集
+                    $this->assign('cat_sidebar_title', $children2["cat_name"]); 
 
                     $this->assign('children2', $children2);
 
@@ -171,14 +173,14 @@ class WidgetWidget extends Controller
 
             } else {
                 //有子类处理
-                $this->assign('cat_sidebar_title', $children["cat_name"]); // 赋值数据集
+                $this->assign('cat_sidebar_title', $children["cat_name"]); 
                 $this->assign('children2', $children);
 
 
             }
         }
 
-        $this->assign('cat_id', $cat_id); // 赋值数据集
+        $this->assign('cat_id', $cat_id); 
         $this->display('Widget:cat_sidebar');
 
     }

@@ -75,8 +75,8 @@ class MenuLogic extends Model
             if (!empty($value['menu_children'])) {
                 $res .= '<ul>';
 
-                foreach (array_sort($value['menu_children'], 'menu_sort') as $key => $value) {
-                    $res .= ' <li ' . $li_attr . '><a target="' . $value['menu_action'] . '" href="' . $value['menu_abs_url'] . '">' . $value['menu_name'] . '</a></li>';
+                foreach (array_sort($value['menu_children'], 'menu_sort') as $item) {
+                    $res .= ' <li ' . $li_attr . '><a target="' . $item['menu_action'] . '" href="' . $item['menu_abs_url'] . '">' . $item['menu_name'] . '</a></li>';
 
                 }
                 $res .= '</ul>';

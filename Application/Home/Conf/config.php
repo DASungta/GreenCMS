@@ -1,9 +1,7 @@
 <?php
-if (APP_DEBUG) {
-    $DEFAULT_THEME = I('get.theme', get_kv('home_theme', false, 'NovaGreenStudio'));
-} else {
-    $DEFAULT_THEME = get_kv('home_theme', false, 'NovaGreenStudio');
-}
+
+$DEFAULT_THEME = get_kv('home_theme', false, 'NovaGreenStudio');
+
 
 $config = array(
     //静态缓存

@@ -10,8 +10,8 @@
 namespace Home\Controller;
 
 use Common\Controller\BaseController;
-use Think\Hook;
 use Common\Util\File;
+use Think\Hook;
 
 /**
  * Home模块基础类控制器
@@ -20,6 +20,13 @@ use Common\Util\File;
  */
 abstract class HomeBaseController extends BaseController
 {
+
+
+    /**
+     * @var int
+     */
+    protected $pager;
+
 
     /**
      * Home模块基础类控制器构造
@@ -31,6 +38,7 @@ abstract class HomeBaseController extends BaseController
 //        $this->customConfig();
         $this->_themeConfig();
 
+        $this->pager = get_opinion('PAGER');
 
     }
 
@@ -44,8 +52,9 @@ abstract class HomeBaseController extends BaseController
      */
     public function if404($info, $message = "")
     {
-        if (empty($info))
+        if (empty($info)) {
             $this->error404($message);
+        }
     }
 
 

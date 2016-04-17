@@ -46,19 +46,4 @@ class IndexController extends HomeBaseController
 
     }
 
-    /**
-     * 测试使用
-     */
-    function test()
-    {
-
-        header("Content-type: text/html; charset=utf-8");
-
-        $CatsLogic=new \Common\Logic\CatsLogic();
-
-        $res= $CatsLogic->getPostsByCatWithChildren(2,10);
-
-         dump($res);
-    }
-
 }

@@ -94,24 +94,24 @@ $config_router = array(
 
 
     /**
+     * 当前只有native模式可以使用
      * 标签链接模式
      * @var
      * native
      * ID
      * slug
      */
-    //TODO 当前只有native模式可以使用
     'OUR_TAG_MODEL' => "native", //TAG标签路由模式.
 
 
     /**
+     * 当前只有native模式可以使用
      * 分类链接模式
      * @var
      * native
      * ID
      * slug
      */
-    //TODO 当前只有native模式可以使用
     'OUR_CAT_MODEL' => "native", //TAG标签路由模式.
 
 

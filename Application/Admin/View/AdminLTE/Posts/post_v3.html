@@ -21,11 +21,15 @@
     </script>
     <style>
         .form-group .controls {
-            margin-left: 80px;
+            margin-left: 60px;
         }
 
         .form-group .control-label {
-            width: 60px;
+            width: 45px;
+        }
+
+        .well {
+            padding: 10px;
         }
 
         p {
@@ -61,18 +65,18 @@
                         <!-- /.box-header -->
                         <div class="box-body">
                             <div class="form-group">
-                                <label class="control-label">标题</label>
+                                <!--<label class="control-label">标题</label>-->
 
-                                <div class="controls">
+                                <div class="controls" style="margin-left:20px">
                                     <input type="text" id="post_title"
                                            class="form-control large" name="post_title"
                                            value="{$info.post_title}"/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">内容</label>
+                                <!--<label class="control-label">内容</label>-->
 
-                                <div class="controls">
+                                <div class="controls" style="margin-left:20px">
                                     <textarea class="span12 ckeditor" id="post_content" name="post_content" title="">{$info.post_content}</textarea>
                                 </div>
                             </div>
@@ -93,7 +97,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="box-body well">
-                            <div id="post_advance" style="padding-left: 5%">
+                            <div id="post_advance" style="padding-left: 5px">
                                 <div class="form-group">
                                     <label class="control-label">状态</label>
 
@@ -141,8 +145,8 @@
 									<span class="checked"><input type="radio"
                                                                  name="post_top" value="1" checked=""></span>
                                                     <else/>
-									<span class=""><input type="radio"
-                                                          name="post_top" value="1"></span>
+                                                    <span class=""><input type="radio"
+                                                                          name="post_top" value="1"></span>
                                                 </if>
                                             </div>
                                             是
@@ -153,8 +157,8 @@
 										<span class="checked"><input type="radio"
                                                                      name="post_top" value="0" checked=""></span>
                                                     <else/>
-										<span class=""><input type="radio"
-                                                              name="post_top" value="0"></span>
+                                                    <span class=""><input type="radio"
+                                                                          name="post_top" value="0"></span>
                                                 </if>
                                             </div>
                                             否
@@ -163,9 +167,9 @@
                                 </div>
                                 <hr/>
                                 <div class="form-group">
-                                    <label class="control-label">发布时间:</label>
+                                    <label class="control-label">发布</label>
 
-                                    <div class="input-group controls " style="width: 60%">
+                                    <div class="input-group controls " >
                                         <input name="post_date" type="text" class="form-control timepicker"
                                                style="z-index:2"
                                                value="{$info.post_date}"/>
@@ -177,18 +181,18 @@
                                     <!-- /.input group -->
                                 </div>
                                 <div class="form-group">
-                                <label class="control-label">修改时间:</label>
+                                    <label class="control-label">修改</label>
 
-                                <div class="input-group controls " style="width: 60%">
-                                    <input name="post_modified" type="text" class="form-control timepicker"
-                                           style="z-index:2" readonly="readonly"
-                                           value="{$info.post_modified}"/>
+                                    <div class="input-group controls " style="width: 60%">
+                                        <input name="post_modified" type="text" class="form-control timepicker"
+                                               style="z-index:2" readonly="readonly"
+                                               value="{$info.post_modified}"/>
 
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-clock-o"></i>
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                                 <hr/>
                                 <div class="form-group">
                                     <label class="control-label">分类</label>

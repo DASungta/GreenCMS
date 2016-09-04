@@ -14,6 +14,13 @@ class HomeController extends WeixinBaseController
 {
     public function index()
     {
+        $action = '首页';
+        $action_url = U('Weixin/Home/index');
+
+
+        $this->assign('action', $action);
+        $this->assign('action_url', $action_url);
+
         $this->display();
     }
 

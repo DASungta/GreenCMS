@@ -32,7 +32,7 @@ class MenuController extends WeixinBaseController
         $this->assign('action_name', '编辑');
         $this->assign('action_url', U('Weixin/Menu/edit', array('level' => $level, 'pid' => $pid, 'id' => $id, 'type' => $type)));
 
-        $Weixin_menu = json_decode(get_opinion(get_opinion('Weixin_menu', true)), true);
+        $Weixin_menu = json_decode(trim(get_opinion('Weixin_menu', true)), true);
         $Weixin_menu = $Weixin_menu['button'];
 
         $this->assign('weixin_menu', $Weixin_menu);
@@ -197,7 +197,7 @@ class MenuController extends WeixinBaseController
         $Menu = new MenuEvent();
         $res = $Menu->restore();
         if ($res) {
-            $this->success('设置成功');
+            $this->success('设置成功'.$res);
         } else {
             $this->error('设置失败或者没有改变');
 

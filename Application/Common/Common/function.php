@@ -861,3 +861,15 @@ function arrayRes($status, $info, $url = "")
 {
     return array("status" => $status, "info" => $info, "url" => $url);
 }
+
+
+
+function gcs_version()
+{
+    return GreenCMS_Version;
+}
+
+function gcs_build()
+{
+    return GreenCMS_Build;
+}

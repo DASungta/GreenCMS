@@ -384,7 +384,7 @@ class CustomController extends AdminBaseController
             if (File::file_exists($file_path_full)) {
 
                 $Update = new UpdateEvent();
-                $applyRes = $Update->applyPatch($file_path_full);
+                $applyRes = $Update->applyZipPatch($file_path_full);
                 $applyInfo = json_decode($applyRes, true);
 
                 if ($applyInfo['status']) {
@@ -1304,7 +1304,7 @@ str;
             if (File::file_exists($file_path_full)) {
 
                 $Update = new UpdateEvent();
-                $applyRes = $Update->applyPatch($file_path_full);
+                $applyRes = $Update->applyZipPatch($file_path_full);
                 $applyInfo = json_decode($applyRes, true);
 
                 if ($applyInfo['status']) {

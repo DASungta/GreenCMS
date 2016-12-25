@@ -222,17 +222,6 @@ class IndexController extends Controller
         if (!mysqli_query($conn,$cquery)) $this->error(' 更新配置数据出错');
 
 
-        $software_version = GreenCMS_Version;
-        $software_build = GreenCMS_Build;
-
-        $cquery = "Update `{$db_prefix}options` set option_value='{$software_version}' where option_name='software_version';";
-        if (!mysqli_query($conn,$cquery)) $this->error(' 更新配置数据出错');
-        $cquery = "Update `{$db_prefix}options` set option_value='{$software_build}' where option_name='software_build';";
-        if (!mysqli_query($conn,$cquery)) $this->error(' 更新配置数据出错');
-        $cquery = "Update `{$db_prefix}options` set option_value='{$software_build}' where option_name='db_build';";
-        if (!mysqli_query($conn,$cquery)) $this->error(' 更新配置数据出错');
-
-
         //TODO              写不下去了
         $this->redirect('Install/Index/step5');
     }

@@ -49,7 +49,7 @@ return array(
     'DEFAULT_FILTER' => 'htmlspecialchars',
 
 
-    'MODULE_ALLOW_LIST' => array('Home', 'Admin', 'Weixin', 'Install', 'Api', 'Oauth'), //配置你原来的分组列表
+    'MODULE_ALLOW_LIST' => array('Home', 'Admin', 'Weixin', 'Install', 'Api'), //配置你原来的分组列表
     'MODULE_DENY_LIST' => array('Common'),
 
 

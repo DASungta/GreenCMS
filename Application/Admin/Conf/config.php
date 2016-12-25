@@ -46,7 +46,6 @@ $menu_arr = array(
 
         'Member' => array(
             'Member/profile' => '用户信息',
-            'Member/sns' => '社交账号绑定',
             'Member/changePass' => '修改密码',
 
         ),
@@ -144,12 +143,7 @@ $menu_arr = array(
             'System/cache' => '缓存设置',
 
             'System/email' => '系统邮件配置',
-//            'System/kvset'  => '其他设置',
-            'System/sns' => '社交登录设置',
-            'System/green' => '开发者选项置',
-            'System/update' => '在线更新',
             'System/info' => '系统信息',
-            'System/bugs' => 'Bug反馈',
 
 
         )

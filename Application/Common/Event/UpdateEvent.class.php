@@ -20,44 +20,8 @@ use Common\Util\File;
 class UpdateEvent extends BaseController
 {
 
-    /**
-     *
-     */
-    public function check()
-    {
 
-
-        $software_build = get_opinion('software_build', true);
-        $url = Server_API . 'api/update/' . $software_build . '/';
-        $json = json_decode(file_get_contents($url), true);
-
-        if ($json['lastest_version'] > $json['user_version']) {
-            return $json;
-        } else {
-            return false;
-        }
-
-    }
-
-
-    /**
-     *
-     */
-    public function checkVersion()
-    {
-        $software_build_db = get_opinion('software_build');
-        $software_build_const = GreenCMS_Build;
-
-        if ($software_build_db == $software_build_const) {
-            return true;
-        } else {
-            return false;
-        }
-
-
-    }
-
-    public function applyPatch($filename)
+    public function applyZipPatch($filename)
     {
         $System = new SystemEvent();
 
@@ -76,10 +40,4 @@ class UpdateEvent extends BaseController
 
     }
 
-
-    public function copyAndBackup($file_path1, $file_path2)
-    {
-
-
-    }
 }

@@ -29,6 +29,9 @@ class IndexController extends AdminBaseController
         $this->assign("PostCount", $CountEvent->getPostCount());
         $this->assign("UserCount", $CountEvent->getUserCount());
 
+        $this->assign("GreenCMS_Version", GreenCMS_Version);
+        $this->assign("GreenCMS_Build", GreenCMS_Build);
+
         if (get_opinion("oem_info", false, 'original') != 'original') {
             $this->display("oem");
         } else {
@@ -43,60 +46,6 @@ class IndexController extends AdminBaseController
     public function main()
     {
         $this->redirect('Home/Index/index');
-    }
-
-    public function checkTodoKey()
-    {
-        $user = $this->CurrentUser;
-        return "checkTodo_" . $user["user_id"];
-    }
-
-    public function checkTodo()
-    {
-        $checkTodo = S($this->checkTodoKey());
-        if (empty($checkTodo)) {
-
-            $check_res = "";
-
-            $AccessEvent = new AccessEvent();
-            $UpdateEvent = new UpdateEvent();
-
-            if ($UpdateEvent->check()) {
-                $check_res .= '<li><a href="' . U("Admin/System/update") . '"><i class="fa fa-laptop"></i> 发现新的可升级版本</a></li>';
-            }
-
-            if (!$UpdateEvent->checkVersion()) {
-                $check_res .= '<li><a href="' . U("Admin/System/update") . '"><i class="fa fa-laptop"></i> 数据库中版本号与代码中不一致</a></li>';
-            }
-
-            if (!$AccessEvent->checkAccess()) {
-                $check_res .= '<li><a href="' . U("Admin/Access/rolelist") . '"><i class="fa fa-laptop"></i> 需要重建角色权限！</a></li>';
-
-            }
-
-            if (!$AccessEvent->checkNode()) {
-                $check_res .= '<li><a href="' . U("Admin/Access/nodelist") . '"><i class="fa fa-laptop"></i> 需要重建节点！</a></li>';
-
-            }
-
-            if ($check_res == "") {
-                $check_res = "none";
-            }
-
-            S($this->checkTodoKey(), $check_res);
-
-            die($check_res);
-
-        } else {
-
-            die(S($this->checkTodoKey()));
-
-        }
-    }
-
-    public function checkTodoCacheClear()
-    {
-        S($this->checkTodoKey(), null);
     }
 
 }

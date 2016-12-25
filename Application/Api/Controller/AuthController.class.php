@@ -49,9 +49,4 @@ class AuthController extends ApiBaseCOntroller
     {
 
     }
-
-    public function oauth()
-    {
-
-    }
 }
